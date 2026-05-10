@@ -233,6 +233,218 @@ footer a{color:var(--gold);}
   opacity:.85;
 }
 .nav-left{display:flex;align-items:center;gap:.65rem;}
+
+/* ============================================================ */
+/* REGISTRATION POPUP — CSS                                      */
+/* ============================================================ */
+
+/* ---------- Registration Popup Overlay ---------- */
+.reg-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.reg-overlay.active {
+  display: flex;
+  opacity: 0;
+  animation: fadeInOverlay 0.35s ease forwards;
+}
+@keyframes fadeInOverlay { to { opacity: 1; } }
+
+/* ---------- Popup Card ---------- */
+.reg-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 40px 36px;
+  position: relative;
+  transform: translateY(24px);
+  animation: slideUpCard 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) var(--card2);
+}
+.reg-card::-webkit-scrollbar { width: 5px; }
+.reg-card::-webkit-scrollbar-track { background: var(--card2); }
+.reg-card::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+@keyframes slideUpCard { to { transform: translateY(0); } }
+
+/* ---------- Close Button ---------- */
+.reg-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none;
+  color: var(--gold); font-size: 22px; cursor: pointer;
+  line-height: 1; padding: 4px 8px; transition: color 0.2s;
+}
+.reg-close:hover { color: var(--goldlt); }
+
+/* ---------- Card Header ---------- */
+.reg-header {
+  text-align: center; margin-bottom: 28px;
+  padding-bottom: 20px; border-bottom: 1px solid var(--border2);
+}
+.reg-header h2 {
+  font-family: 'Cormorant SC', serif;
+  color: var(--goldlt); font-size: 1.25rem;
+  letter-spacing: 0.1em; margin: 0 0 6px 0;
+}
+.reg-header p { color: var(--fg3); font-size: 0.78rem; margin: 0; letter-spacing: 0.04em; }
+
+/* ---------- Section Labels ---------- */
+.reg-section-label {
+  font-family: 'Cormorant SC', serif;
+  color: var(--gold); font-size: 0.66rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin: 22px 0 12px 0;
+}
+
+/* ---------- Form Fields ---------- */
+.reg-field { margin-bottom: 16px; position: relative; }
+.reg-field label {
+  display: block; color: var(--fg2); font-size: 0.75rem;
+  margin-bottom: 6px; letter-spacing: 0.04em;
+}
+.reg-field label span.required { color: var(--red); margin-left: 2px; }
+.reg-field input,
+.reg-field select {
+  width: 100%; background: var(--bg2);
+  border: 1px solid var(--border2); border-radius: 3px;
+  color: var(--fg); font-size: 0.88rem;
+  padding: 11px 14px; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box; font-family: 'Jost', sans-serif;
+  -webkit-appearance: none; appearance: none;
+}
+.reg-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 36px; cursor: pointer;
+}
+.reg-field select option { background: var(--bg); color: var(--fg); }
+.reg-field input:focus, .reg-field select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.12);
+}
+.reg-field input.error, .reg-field select.error { border-color: var(--red); }
+
+/* Autocomplete suggestions */
+.reg-suggestions {
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: var(--card2); border: 1px solid var(--border);
+  border-top: none; border-radius: 0 0 3px 3px;
+  z-index: 100; max-height: 160px; overflow-y: auto; display: none;
+}
+.reg-suggestions.visible { display: block; }
+.reg-suggestion-item {
+  padding: 9px 14px; color: var(--fg2); font-size: 0.85rem;
+  cursor: pointer; transition: background 0.15s;
+}
+.reg-suggestion-item:hover { background: var(--border2); color: var(--goldlt); }
+
+/* Same name warning */
+.reg-name-warning { color: var(--red); font-size: 0.76rem; margin-top: 5px; display: none; }
+.reg-name-warning.visible { display: block; }
+
+/* Two column row */
+.reg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 480px) {
+  .reg-row { grid-template-columns: 1fr; }
+  .reg-card { padding: 28px 20px; }
+}
+
+/* Declaration */
+.reg-declaration {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin: 20px 0 24px; padding: 16px;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 3px; cursor: pointer;
+}
+.reg-declaration input[type="checkbox"] {
+  width: 16px; min-width: 16px; height: 16px;
+  margin-top: 2px; accent-color: var(--gold); cursor: pointer;
+}
+.reg-declaration label { color: var(--fg2); font-size: 0.78rem; line-height: 1.55; cursor: pointer; }
+
+/* Submit Button */
+.reg-submit {
+  width: 100%;
+  background: linear-gradient(135deg, var(--golddm) 0%, var(--gold) 50%, var(--golddm) 100%);
+  background-size: 200% auto; color: #fff;
+  border: none; border-radius: 3px; padding: 14px;
+  font-family: 'Cormorant SC', serif; font-size: 0.88rem;
+  font-weight: 700; letter-spacing: 0.12em; cursor: pointer;
+  transition: background-position 0.4s ease, opacity 0.2s;
+}
+.reg-submit:hover { background-position: right center; }
+.reg-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Loading Spinner */
+.reg-loading { display: none; text-align: center; padding: 24px 0; color: var(--gold); font-size: 0.82rem; letter-spacing: 0.1em; }
+.reg-spinner {
+  width: 32px; height: 32px;
+  border: 2px solid var(--border2); border-top-color: var(--gold);
+  border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Success Card */
+.reg-success { display: none; text-align: center; padding: 10px 0; }
+.reg-success-icon {
+  width: 56px; height: 56px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; font-size: 22px; color: var(--gold);
+}
+.reg-success h3 {
+  font-family: 'Cormorant SC', serif; color: var(--goldlt);
+  font-size: 1.15rem; margin: 0 0 10px; letter-spacing: 0.08em;
+}
+.reg-success .reg-number-display {
+  font-family: 'Cormorant SC', serif; font-size: 1.5rem;
+  color: var(--goldlt); letter-spacing: 0.14em;
+  padding: 14px 24px; border: 1px solid var(--gold);
+  display: inline-block; margin: 14px 0;
+  background: rgba(201, 168, 76, 0.06);
+}
+.reg-success p { color: var(--fg2); font-size: 0.8rem; line-height: 1.65; margin: 6px 0; }
+.reg-success .reg-notes {
+  text-align: left; margin: 18px 0; padding: 16px;
+  background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px;
+}
+.reg-success .reg-notes p {
+  font-size: 0.76rem; color: var(--fg3); margin: 4px 0;
+  padding-left: 14px; position: relative;
+}
+.reg-success .reg-notes p::before { content: "•"; color: var(--gold); position: absolute; left: 0; }
+.reg-register-another {
+  margin-top: 22px; background: none;
+  border: 1px solid var(--gold); color: var(--gold);
+  padding: 10px 24px; font-family: 'Cormorant SC', serif;
+  font-size: 0.76rem; letter-spacing: 0.12em; cursor: pointer;
+  border-radius: 3px; transition: all 0.2s;
+}
+.reg-register-another:hover { background: rgba(201,168,76,0.1); color: var(--goldlt); border-color: var(--goldlt); }
+
+/* Error Message */
+.reg-error-msg {
+  background: rgba(192, 57, 43, 0.08); border: 1px solid rgba(192, 57, 43, 0.3);
+  border-radius: 3px; color: var(--red); font-size: 0.78rem;
+  padding: 12px 14px; margin-bottom: 16px; display: none; line-height: 1.55;
+}
+.reg-error-msg.visible { display: block; }
 </style>
 </head>
 <body>
@@ -525,7 +737,14 @@ function wireBtn(id, url, fallbackMsg) {
     el.addEventListener('click', e => { e.preventDefault(); alert(fallbackMsg); });
   }
 }
-wireBtn('heroRegBtn', REGISTER_URL, 'Registration link coming soon!\nOpens first week of June 2026.');
+// Registration now handled by the on-page popup
+// Use a delegated click so openRegistration() is always defined by the time it fires
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('#heroRegBtn, a[href="#register"]');
+  if (btn) { e.preventDefault(); if (typeof openRegistration === 'function') openRegistration(); }
+});
+const heroRegBtn = document.getElementById('heroRegBtn');
+if (heroRegBtn) { heroRegBtn.href = '#'; }
 wireBtn('heroSubBtn', SUBMIT_URL,   'Submission link coming soon!\nOpens once registrations begin.');
 
 
@@ -692,5 +911,312 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
   });
 });
 </script>
+
+<!-- ============================================================ -->
+<!-- REGISTRATION POPUP HTML                                       -->
+<!-- ============================================================ -->
+<div class="reg-overlay" id="regOverlay">
+  <div class="reg-card" id="regCard">
+    <button class="reg-close" id="regClose" aria-label="Close">&#x2715;</button>
+    <div class="reg-header">
+      <h2>Team Registration</h2>
+      <p>RBI Reelathon 2026 &nbsp;·&nbsp; Thiruvananthapuram</p>
+    </div>
+    <div class="reg-error-msg" id="regErrorMsg"></div>
+    <form id="regForm" novalidate>
+      <div class="reg-section-label">Team Members</div>
+      <div class="reg-field">
+        <label for="reg_name1">Team Member 1 — Name as per College ID <span class="required">*</span></label>
+        <input type="text" id="reg_name1" name="name1" placeholder="Full name as on ID card" autocomplete="off">
+      </div>
+      <div class="reg-field">
+        <label for="reg_name2">Team Member 2 — Name as per College ID <span class="required">*</span></label>
+        <input type="text" id="reg_name2" name="name2" placeholder="Full name as on ID card" autocomplete="off">
+        <div class="reg-name-warning" id="regNameWarning">Both team members cannot have the same name.</div>
+      </div>
+      <div class="reg-section-label">Contact Details</div>
+      <div class="reg-field">
+        <label for="reg_email">Email Address <span class="required">*</span></label>
+        <input type="email" id="reg_email" name="email" placeholder="For official communication">
+      </div>
+      <div class="reg-row">
+        <div class="reg-field">
+          <label for="reg_phone">Contact Number <span class="required">*</span></label>
+          <input type="tel" id="reg_phone" name="phone" placeholder="Member 1 number" maxlength="10">
+        </div>
+        <div class="reg-field">
+          <label for="reg_altphone">Alternative Contact <span class="required">*</span></label>
+          <input type="tel" id="reg_altphone" name="altPhone" placeholder="Member 2 number" maxlength="10">
+        </div>
+      </div>
+      <div class="reg-section-label">College Details</div>
+      <div class="reg-field">
+        <label for="reg_district">District <span class="required">*</span></label>
+        <select id="reg_district" name="district">
+          <option value="" disabled selected>Select your district</option>
+          <option>Alappuzha</option>
+          <option>Ernakulam</option>
+          <option>Idukki</option>
+          <option>Kannur</option>
+          <option>Kasaragod</option>
+          <option>Kollam</option>
+          <option>Kottayam</option>
+          <option>Kozhikode</option>
+          <option>Lakshadweep</option>
+          <option>Malappuram</option>
+          <option>Palakkad</option>
+          <option>Pathanamthitta</option>
+          <option>Thiruvananthapuram</option>
+          <option>Thrissur</option>
+          <option>Wayanad</option>
+        </select>
+      </div>
+      <div class="reg-field">
+        <label for="reg_college">College Name as per ID <span class="required">*</span></label>
+        <input type="text" id="reg_college" name="college" placeholder="Full name of your college">
+      </div>
+      <div class="reg-row">
+        <div class="reg-field" style="position:relative">
+          <label for="reg_course">Course <span class="required">*</span></label>
+          <input type="text" id="reg_course" name="course" placeholder="e.g. B.Tech" autocomplete="off">
+          <div class="reg-suggestions" id="courseSuggestions"></div>
+        </div>
+        <div class="reg-field">
+          <label for="reg_dept">Department <span class="required">*</span></label>
+          <input type="text" id="reg_dept" name="department" placeholder="e.g. Computer Science">
+        </div>
+      </div>
+      <div class="reg-field">
+        <label for="reg_year">Year of Study <span class="required">*</span></label>
+        <input type="text" id="reg_year" name="year" placeholder="e.g. 2nd Year">
+      </div>
+      <div class="reg-section-label">Declaration</div>
+      <div class="reg-declaration" onclick="document.getElementById('reg_declaration').click()">
+        <input type="checkbox" id="reg_declaration" name="declaration" onclick="event.stopPropagation()">
+        <label for="reg_declaration" onclick="event.preventDefault()">
+          I have read and agree to all the rules and regulations of RBI Reelathon 2026.
+          I confirm that all the information provided is accurate.
+        </label>
+      </div>
+      <button type="submit" class="reg-submit" id="regSubmitBtn">Register Your Team</button>
+    </form>
+    <div class="reg-loading" id="regLoading">
+      <div class="reg-spinner"></div>
+      Submitting your registration…
+    </div>
+    <div class="reg-success" id="regSuccess">
+      <div class="reg-success-icon">✓</div>
+      <h3>Registration Complete</h3>
+      <p>Thank you for registering!</p>
+      <div class="reg-number-display" id="regNumberDisplay">RR10001</div>
+      <p>Use this for all future correspondence.</p>
+      <p style="margin-top:10px; color:var(--fg3); font-size:0.77rem;">
+        A confirmation email has been sent to your email address.<br>
+        Please check your inbox (and spam folder).
+      </p>
+      <div class="reg-notes">
+        <p>No entry fee is required for the competition.</p>
+        <p>RBI never asks for OTPs, PINs or sensitive bank details.</p>
+        <p>Your personal information will be used strictly for official communication regarding the competition. In compliance with the Digital Personal Data Protection (DPDP) Act, 2023, all data will be securely disposed of following the conclusion of the event.</p>
+      </div>
+      <button class="reg-register-another" id="regAnotherBtn">Register Another Team</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================ */
+/* REGISTRATION POPUP — JAVASCRIPT                               */
+/* ============================================================ */
+(function () {
+  // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG6T52zjTPlGgIOSc6QDSes9VEQn3kBHicZVpsqqGViOL7g4tcA2k3TU0qMyc3IQteGQ/exec";
+  // ----------------------------------------------------------------
+
+  var COURSE_SUGGESTIONS = [
+    "B.A.", "B.Sc.", "B.Com.", "B.Tech.", "B.C.A.", "B.B.A.",
+    "B.Pharm.", "B.Arch.", "B.Ed.", "B.S.W.", "B.Des.", "B.F.A.",
+    "B.Voc.", "B.P.Ed.", "B.Lib.", "B.Mus.", "LLB", "MBBS", "BDS",
+    "B.Sc. Nursing", "B.Sc. Agriculture", "B.Sc. Forestry"
+  ];
+
+  var STORAGE_KEY = "rbi_reelathon_registered";
+
+  var overlay    = document.getElementById("regOverlay");
+  var card       = document.getElementById("regCard");
+  var closeBtn   = document.getElementById("regClose");
+  var form       = document.getElementById("regForm");
+  var loading    = document.getElementById("regLoading");
+  var success    = document.getElementById("regSuccess");
+  var errorMsg   = document.getElementById("regErrorMsg");
+  var submitBtn  = document.getElementById("regSubmitBtn");
+  var anotherBtn = document.getElementById("regAnotherBtn");
+  var nameWarn   = document.getElementById("regNameWarning");
+  var courseSug  = document.getElementById("courseSuggestions");
+  var name1Input = document.getElementById("reg_name1");
+  var name2Input = document.getElementById("reg_name2");
+  var courseInput = document.getElementById("reg_course");
+
+  // Expose openRegistration globally so the Register Now button can call it
+  window.openRegistration = function () {
+    var stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try { showAlreadyRegistered(JSON.parse(stored)); } catch(e) { openFresh(); }
+      return;
+    }
+    openFresh();
+  };
+
+  function openFresh() {
+    resetForm();
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closePopup() {
+    overlay.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  closeBtn.addEventListener("click", closePopup);
+  overlay.addEventListener("click", function (e) { if (e.target === overlay) closePopup(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePopup(); });
+
+  /* Same name live check */
+  function checkSameNames() {
+    var n1 = name1Input.value.trim().toLowerCase();
+    var n2 = name2Input.value.trim().toLowerCase();
+    if (n1 && n2 && n1 === n2) { nameWarn.classList.add("visible"); return false; }
+    nameWarn.classList.remove("visible"); return true;
+  }
+  name1Input.addEventListener("input", checkSameNames);
+  name2Input.addEventListener("input", checkSameNames);
+
+  /* Course autocomplete */
+  courseInput.addEventListener("input", function () {
+    var val = this.value.trim().toLowerCase();
+    courseSug.innerHTML = "";
+    if (!val) { courseSug.classList.remove("visible"); return; }
+    var matches = COURSE_SUGGESTIONS.filter(function (s) { return s.toLowerCase().startsWith(val); });
+    if (!matches.length) { courseSug.classList.remove("visible"); return; }
+    matches.forEach(function (s) {
+      var item = document.createElement("div");
+      item.className = "reg-suggestion-item";
+      item.textContent = s;
+      item.addEventListener("mousedown", function () { courseInput.value = s; courseSug.classList.remove("visible"); });
+      courseSug.appendChild(item);
+    });
+    courseSug.classList.add("visible");
+  });
+  courseInput.addEventListener("blur", function () { setTimeout(function () { courseSug.classList.remove("visible"); }, 150); });
+
+  /* Form submit */
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    hideError();
+    if (!checkSameNames()) { showError("Both team members cannot have the same name."); return; }
+    if (!document.getElementById("reg_declaration").checked) {
+      showError("Please agree to the rules and regulations before submitting."); return;
+    }
+    var payload = {
+      name1:      document.getElementById("reg_name1").value.trim(),
+      name2:      document.getElementById("reg_name2").value.trim(),
+      email:      document.getElementById("reg_email").value.trim(),
+      phone:      document.getElementById("reg_phone").value.trim(),
+      altPhone:   document.getElementById("reg_altphone").value.trim(),
+      district:   document.getElementById("reg_district").value,
+      college:    document.getElementById("reg_college").value.trim(),
+      course:     document.getElementById("reg_course").value.trim(),
+      department: document.getElementById("reg_dept").value.trim(),
+      year:       document.getElementById("reg_year").value.trim(),
+      declaration: true
+    };
+    for (var key in payload) {
+      if (payload[key] === "" || payload[key] === false) {
+        showError("Please fill in all required fields."); return;
+      }
+    }
+    form.style.display = "none";
+    loading.style.display = "block";
+    submitBtn.disabled = true;
+    submitWithRetry(payload, 3);
+  });
+
+  function submitWithRetry(payload, retriesLeft) {
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      loading.style.display = "none";
+      if (data.success) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          regNumber: data.registrationNumber,
+          name1: payload.name1, name2: payload.name2
+        }));
+        showSuccess(data.registrationNumber);
+      } else {
+        form.style.display = "block"; submitBtn.disabled = false;
+        if (data.message === "duplicate_email") {
+          showError("This email address is already registered. Please check your inbox for your Registration ID.");
+        } else if (data.message === "duplicate_phone") {
+          showError("This contact number is already registered. If this is an error, contact rbireelathon@gmail.com.");
+        } else {
+          showError(data.message || "Something went wrong. Please try again.");
+        }
+      }
+    })
+    .catch(function () {
+      if (retriesLeft > 0) {
+        setTimeout(function () { submitWithRetry(payload, retriesLeft - 1); }, (4 - retriesLeft) * 2000);
+      } else {
+        loading.style.display = "none"; form.style.display = "block"; submitBtn.disabled = false;
+        showError("Connection issue. Please check your internet and try again.");
+      }
+    });
+  }
+
+  function showSuccess(regNumber) {
+    document.getElementById("regNumberDisplay").textContent = regNumber;
+    success.style.display = "block";
+  }
+  function showError(msg) { errorMsg.textContent = msg; errorMsg.classList.add("visible"); card.scrollTop = 0; }
+  function hideError() { errorMsg.classList.remove("visible"); errorMsg.textContent = ""; }
+
+  function resetForm() {
+    form.reset(); form.style.display = "block";
+    loading.style.display = "none"; success.style.display = "none";
+    submitBtn.disabled = false; nameWarn.classList.remove("visible");
+    hideError(); card.scrollTop = 0;
+    var alr = document.getElementById("regAlreadyDone");
+    if (alr) alr.remove();
+  }
+
+  anotherBtn.addEventListener("click", function () {
+    localStorage.removeItem(STORAGE_KEY); resetForm();
+  });
+
+  function showAlreadyRegistered(info) {
+    resetForm();
+    overlay.classList.add("active"); document.body.style.overflow = "hidden";
+    form.style.display = "none"; success.style.display = "none";
+    var alreadyDiv = document.createElement("div");
+    alreadyDiv.id = "regAlreadyDone";
+    alreadyDiv.style.cssText = "text-align:center; padding:20px 0;";
+    alreadyDiv.innerHTML =
+      '<div class="reg-success-icon">&#10003;</div>' +
+      '<h3 style="font-family:Cormorant SC,serif;color:var(--goldlt);font-size:1.1rem;margin:0 0 10px;letter-spacing:0.08em;">Already Registered</h3>' +
+      '<p style="color:var(--fg2);font-size:0.82rem;margin-bottom:14px;">This device has already completed a registration.</p>' +
+      '<div class="reg-number-display">' + (info.regNumber || '') + '</div>' +
+      '<p style="color:var(--fg3);font-size:0.78rem;margin:14px 0 8px;">' + (info.name1 || '') + ' &amp; ' + (info.name2 || '') + '</p>' +
+      '<p style="color:var(--fg3);font-size:0.76rem;margin-bottom:22px;">Registering for a different team?</p>' +
+      '<button class="reg-register-another" onclick="localStorage.removeItem('' + STORAGE_KEY + '');document.getElementById('regAlreadyDone').remove();openRegistration();">Register Another Team</button>';
+    card.appendChild(alreadyDiv);
+  }
+})();
+</script>
+
 </body>
 </html>

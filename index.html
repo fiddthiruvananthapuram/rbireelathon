@@ -256,7 +256,7 @@ footer a{color:var(--gold);}
 .reg-overlay.active {
   display: flex;
   opacity: 0;
-  animation: fadeInOverlay 0.35s ease forwards;
+  animation: fadeInOverlay 0.5s ease forwards;
 }
 @keyframes fadeInOverlay { to { opacity: 1; } }
 
@@ -271,8 +271,8 @@ footer a{color:var(--gold);}
   overflow-y: auto;
   padding: 40px 36px;
   position: relative;
-  transform: translateY(24px);
-  animation: slideUpCard 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform: translateY(60px);
+  animation: slideUpCard 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   scrollbar-width: thin;
   scrollbar-color: var(--gold) var(--card2);
 }
@@ -1212,7 +1212,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
       '<div class="reg-number-display">' + (info.regNumber || '') + '</div>' +
       '<p style="color:var(--fg3);font-size:0.78rem;margin:14px 0 8px;">' + (info.name1 || '') + ' &amp; ' + (info.name2 || '') + '</p>' +
       '<p style="color:var(--fg3);font-size:0.76rem;margin-bottom:22px;">Registering for a different team?</p>' +
-      '<button class="reg-register-another" onclick="localStorage.removeItem('' + STORAGE_KEY + '');document.getElementById('regAlreadyDone').remove();openRegistration();">Register Another Team</button>';
+      '<button class="reg-register-another" onclick="localStorage.removeItem(&quot;' + STORAGE_KEY + '&quot;);document.getElementById(&quot;regAlreadyDone&quot;).remove();openRegistration();">Register Another Team</button>';
     card.appendChild(alreadyDiv);
   }
 })();

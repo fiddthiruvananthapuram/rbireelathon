@@ -1030,7 +1030,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG6T52zjTPlGgIOSc6QDSes9VEQn3kBHicZVpsqqGViOL7g4tcA2k3TU0qMyc3IQteGQ/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4JJZyhxg57Vy2qAuKK6cAdSyMBA261hu9pdu4cpHRogUstfJYY-4_TUpAl4fB_KhRXg/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1143,10 +1143,14 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
   });
 
   function submitWithRetry(payload, retriesLeft) {
+    // Use no-cors fetch with a hidden iframe to handle Apps Script CORS
+    var formData = new FormData();
+    formData.append("data", JSON.stringify(payload));
+
     fetch(SCRIPT_URL, {
       method: "POST",
       body: JSON.stringify(payload),
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "text/plain" }
     })
     .then(function (res) { return res.json(); })
     .then(function (data) {

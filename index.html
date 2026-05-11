@@ -1033,7 +1033,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxnzquxaauePt3n3g8UGLSn_HVa6ZDRDBV-INqjfd87-9zibXy1-ZUp95zbmVKTLDvG/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdRaw84kz3DBH01XQET9Ugi9dB2KeYb9_c_2x8NXpFer84sMKenan2iI8oKPP56qHX/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1180,6 +1180,15 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
         showError("Please fill in all required fields."); return;
       }
     }
+    // Email format validation
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(payload.email)) {
+      showError("Please enter a valid email address (e.g. name@gmail.com)."); return;
+    }
+    // Same contact number check
+    if (payload.phone === payload.altPhone) {
+      showError("Contact number and alternative contact number cannot be the same."); return;
+    }
     form.style.display = "none";
     loading.style.display = "block";
     submitBtn.disabled = true;
@@ -1208,7 +1217,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
         if (data.message === "duplicate_email") {
           showError("This email address is already registered. Please check your inbox for your Registration ID.");
         } else if (data.message === "duplicate_phone") {
-          showError("This contact number is already registered. If this is an error, contact rbireelathon@gmail.com.");
+          showError("This contact number is already registered. If this is an error, contact rbireelathon2026@gmail.com.");
         } else {
           showError(data.message || "Something went wrong. Please try again.");
         }

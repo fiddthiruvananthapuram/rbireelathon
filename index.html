@@ -392,6 +392,7 @@ footer a{color:var(--gold);}
 
 /* Loading Spinner */
 .reg-loading { display: none; text-align: center; padding: 24px 0; color: var(--gold); font-size: 0.82rem; letter-spacing: 0.1em; }
+.reg-loading-msg { margin-top: 4px; transition: opacity 0.4s ease; }
 .reg-spinner {
   width: 32px; height: 32px;
   border: 2px solid var(--border2); border-top-color: var(--gold);
@@ -998,11 +999,13 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
           I confirm that all the information provided is accurate.
         </label>
       </div>
+      <!-- Honeypot — hidden from humans, bots will fill this -->
+      <input type="text" id="reg_hp" name="website" style="opacity:0;position:absolute;top:0;left:0;height:0;width:0;z-index:-1;" tabindex="-1" autocomplete="off">
       <button type="submit" class="reg-submit" id="regSubmitBtn">Register Your Team</button>
     </form>
     <div class="reg-loading" id="regLoading">
       <div class="reg-spinner"></div>
-      Submitting your registration…
+      <div class="reg-loading-msg" id="regLoadingMsg">Checking your details…</div>
     </div>
     <div class="reg-success" id="regSuccess">
       <div class="reg-success-icon">✓</div>
@@ -1030,7 +1033,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4JJZyhxg57Vy2qAuKK6cAdSyMBA261hu9pdu4cpHRogUstfJYY-4_TUpAl4fB_KhRXg/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxnzquxaauePt3n3g8UGLSn_HVa6ZDRDBV-INqjfd87-9zibXy1-ZUp95zbmVKTLDvG/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1110,10 +1113,50 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
   });
   courseInput.addEventListener("blur", function () { setTimeout(function () { courseSug.classList.remove("visible"); }, 150); });
 
+  /* Loading narrative messages */
+  var LOADING_MESSAGES = [
+    "Checking your details…",
+    "Verifying for duplicates…",
+    "Securing your registration…",
+    "Generating your registration number…",
+    "Sending confirmation email…",
+    "Almost there…"
+  ];
+  var loadingMsgInterval = null;
+
+  function startLoadingNarrative() {
+    var msgEl = document.getElementById("regLoadingMsg");
+    var idx = 0;
+    msgEl.textContent = LOADING_MESSAGES[0];
+    var delays = [0, 2500, 5000, 7500, 10000, 13000];
+    delays.forEach(function(delay, i) {
+      setTimeout(function() {
+        if (msgEl && LOADING_MESSAGES[i]) {
+          msgEl.style.opacity = "0";
+          setTimeout(function() {
+            if (msgEl && LOADING_MESSAGES[i]) {
+              msgEl.textContent = LOADING_MESSAGES[i];
+              msgEl.style.opacity = "1";
+            }
+          }, 200);
+        }
+      }, delay);
+    });
+  }
+
+  function stopLoadingNarrative() {
+    if (loadingMsgInterval) { clearInterval(loadingMsgInterval); loadingMsgInterval = null; }
+  }
+
   /* Form submit */
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     hideError();
+
+    // Honeypot check — if filled, silently reject
+    var honeypot = document.getElementById("reg_hp");
+    if (honeypot && honeypot.value.trim() !== "") { return; }
+
     if (!checkSameNames()) { showError("Both team members cannot have the same name."); return; }
     if (!document.getElementById("reg_declaration").checked) {
       showError("Please agree to the rules and regulations before submitting."); return;
@@ -1129,24 +1172,22 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
       course:     document.getElementById("reg_course").value.trim(),
       department: document.getElementById("reg_dept").value.trim(),
       year:       document.getElementById("reg_year").value.trim(),
-      declaration: true
+      declaration: true,
+      hp:         ""
     };
     for (var key in payload) {
-      if (payload[key] === "" || payload[key] === false) {
+      if (key !== "hp" && (payload[key] === "" || payload[key] === false)) {
         showError("Please fill in all required fields."); return;
       }
     }
     form.style.display = "none";
     loading.style.display = "block";
     submitBtn.disabled = true;
+    startLoadingNarrative();
     submitWithRetry(payload, 3);
   });
 
   function submitWithRetry(payload, retriesLeft) {
-    // Use no-cors fetch with a hidden iframe to handle Apps Script CORS
-    var formData = new FormData();
-    formData.append("data", JSON.stringify(payload));
-
     fetch(SCRIPT_URL, {
       method: "POST",
       body: JSON.stringify(payload),
@@ -1154,6 +1195,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     })
     .then(function (res) { return res.json(); })
     .then(function (data) {
+      stopLoadingNarrative();
       loading.style.display = "none";
       if (data.success) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -1176,6 +1218,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
       if (retriesLeft > 0) {
         setTimeout(function () { submitWithRetry(payload, retriesLeft - 1); }, (4 - retriesLeft) * 2000);
       } else {
+        stopLoadingNarrative();
         loading.style.display = "none"; form.style.display = "block"; submitBtn.disabled = false;
         showError("Connection issue. Please check your internet and try again.");
       }

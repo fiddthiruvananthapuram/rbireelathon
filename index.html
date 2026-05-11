@@ -802,7 +802,7 @@ tick(); setInterval(tick, 1000);
    d. Paste that URL into REG_SHEET_CSV below
    e. Repeat for Submission form → paste into SUB_SHEET_CSV
    Page refreshes counts every 60 seconds automatically. */
-const REG_SHEET_CSV = '';  // EDIT: paste published CSV URL for registration sheet
+const REG_SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFw2kOWXTjYo66hCbYSV9-98wx64s8KbqmPq6bGUBBQ6tQi7otENeT-iekboGOXbIrLEmRl05Sd17T/pub?gid=0&single=true&output=csv';
 const SUB_SHEET_CSV = '';  // EDIT: paste published CSV URL for submission sheet
 
 async function fetchCount(url, elId) {
@@ -820,7 +820,7 @@ function refreshCounts() {
   fetchCount(SUB_SHEET_CSV, 'subCount');
 }
 refreshCounts();
-setInterval(refreshCounts, 60000);
+setInterval(refreshCounts, 30000);
 
 
 /* ── 5. CAROUSEL ──────────────────────────

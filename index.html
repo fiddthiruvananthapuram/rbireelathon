@@ -19,14 +19,14 @@
 /* ── THEME TOKENS ── */
 [data-theme="dark"]{
   --bg:#080808;--bg2:#111;--card:#141414;--card2:#1c1c1c;
-  --fg:#F5EDD8;--fg2:rgba(245,237,216,.62);--fg3:rgba(245,237,216,.32);
+  --fg:#F5EDD8;--fg2:rgba(245,237,216,.78);--fg3:rgba(245,237,216,.52);
   --gold:#C9A84C;--goldlt:#E8C97A;--golddm:#8B6520;
   --border:rgba(201,168,76,.18);--border2:rgba(255,255,255,.06);
   --navbg:rgba(8,8,8,.88);--shadow:0 8px 40px rgba(0,0,0,.65);--red:#C0392B;
 }
 [data-theme="light"]{
   --bg:#FDFAF4;--bg2:#F5EDD8;--card:#fff;--card2:#F9F4E8;
-  --fg:#1A1208;--fg2:rgba(26,18,8,.62);--fg3:rgba(26,18,8,.35);
+  --fg:#1A1208;--fg2:rgba(26,18,8,.80);--fg3:rgba(26,18,8,.58);
   --gold:#9A6B1E;--goldlt:#B07D28;--golddm:#C9A84C;
   --border:rgba(154,107,30,.2);--border2:rgba(26,18,8,.08);
   --navbg:rgba(253,250,244,.92);--shadow:0 4px 24px rgba(0,0,0,.1);--red:#B03020;
@@ -640,7 +640,7 @@ footer a{color:var(--gold);}
   <div class="hero-pills">
     <div class="pill">Open to <span>UG Students — Kerala & Lakshadweep</span></div>
     <div class="pill">Language <span>Malayalam</span></div>
-    <div class="pill">Deadline <span>July 30, 2026</span></div>
+    <div class="pill">Last Date for Submission <span>July 30, 2026</span></div>
   </div>
 
   <div class="scroll-cue"><div class="scroll-line"></div><span>Scroll</span></div>
@@ -672,11 +672,13 @@ footer a{color:var(--gold);}
   </p>
   <!-- EDIT: about body -->
   <p class="body-text reveal">
-    The Reserve Bank of India, Thiruvananthapuram believes the most powerful voices in this fight are yours. Reelathon 2026 invites undergraduate students across Kerala and Lakshadweep to create original Malayalam reels that educate, warn, and inspire communities about financial safety.
+    The Reserve Bank of India, Thiruvananthapuram believes the most powerful voices for change belong to you. Reelathon 2026 welcomes undergraduate students across Kerala and Lakshadweep to craft original Malayalam reels that spark awareness, build confidence, and empower communities to make smarter financial choices.
   </p>
+  <!-- ABOUT SECOND PARA — hidden until gala details confirmed. Uncomment when ready:
   <p class="body-text reveal">
     The top entries will be screened at the closing ceremony — a gala event where winners will be decided live. Winning reels may also be used by RBI for financial literacy awareness and outreach, with due credit to the creators.
   </p>
+  -->
 </div>
 
 <div class="divider"></div>
@@ -742,7 +744,7 @@ footer a{color:var(--gold);}
   <div class="themes-stack reveal">
     <div class="theme-row"><div class="theme-alpha">A</div><div><p class="theme-name">Illegitimate Loan Apps</p><p class="theme-desc">Expose the dangers of unregulated digital lending — how they trap borrowers, misuse personal data, and destroy livelihoods.</p></div></div>
     <div class="theme-row"><div class="theme-alpha">B</div><div><p class="theme-name">Mule Accounts</p><p class="theme-desc">Shed light on how ordinary bank accounts are weaponised in fraud chains — and the devastating consequences for unsuspecting victims.</p></div></div>
-    <div class="theme-row"><div class="theme-alpha">C</div><div><p class="theme-name">Cyber Hygiene in Digital Banking</p><p class="theme-desc">Educate viewers on safe digital banking habits — password security, phishing awareness, and protecting personal financial data online.</p></div></div>
+    <div class="theme-row"><div class="theme-alpha">C</div><div><p class="theme-name">Digital Financial Frauds</p><p class="theme-desc">Create awareness about digital financial frauds — scams, phishing, fake investment schemes, and how to stay protected in an increasingly digital financial world.</p></div></div>
   </div>
 </div>
 
@@ -797,7 +799,7 @@ footer a{color:var(--gold);}
     <li class="rule-row"><span class="rule-num">10</span><span class="rule-txt">Submit your reel along with <strong>college ID cards of both credited members</strong> and a signed declaration of originality and no copyright infringement.</span></li>
     <li class="rule-row"><span class="rule-num">11</span><span class="rule-txt">Any attempt to influence the judging process will result in disqualification.</span></li>
     <li class="rule-row"><span class="rule-num">12</span><span class="rule-txt">RBI reserves the right to use submitted reels for <strong>financial literacy awareness and outreach,</strong> with due credit to creators.</span></li>
-    <li class="rule-row"><span class="rule-num">13</span><span class="rule-txt">The decision of the judges shall be <strong>final and binding.</strong> No correspondence will be entertained.</span></li>
+    <li class="rule-row"><span class="rule-num">13</span><span class="rule-txt">The decision of the judges shall be <strong>final and binding.</strong> No correspondence, in this regard, will be entertained.</span></li>
   </ul>
 </div>
 
@@ -939,7 +941,8 @@ async function fetchCount(url, elId) {
     const r    = await fetch(url + '&t=' + Date.now());
     const text = await r.text();
     const rows = text.trim().split('\n').filter(l => l.trim());
-    if (el) el.textContent = Math.max(0, rows.length - 1);
+    const count = Math.max(0, rows.length - 1);
+    if (el) el.textContent = count === 0 ? '—' : count;
   } catch { if (el) el.textContent = '—'; }
 }
 function refreshCounts() {
@@ -994,6 +997,7 @@ setInterval(refreshCounts, 30000);
 (function(){
   const html = document.documentElement;
   const btn  = document.getElementById('themeBtn');
+  // Default is always dark unless user has manually toggled to light
   const saved = localStorage.getItem('reel-theme');
 
   function applyTheme(t) { html.setAttribute('data-theme', t); }
@@ -1005,7 +1009,7 @@ setInterval(refreshCounts, 30000);
     applyTheme(mq.matches ? 'light' : 'dark');
     // Also react to system changes in real time (if user hasn't manually toggled)
     mq.addEventListener('change', e => {
-      if (!localStorage.getItem('reel-theme')) applyTheme(e.matches ? 'light' : 'dark');
+      // System preference ignored — dark is always default
     });
   } else {
     // Fallback: time-of-day
@@ -1307,14 +1311,24 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
         showError("Please fill in all required fields."); return;
       }
     }
-    // Email format validation
+    // --- Collect ALL errors before showing ---
+    var errors = [];
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(payload.email)) {
-      showError("Please enter a valid email address (e.g. name@gmail.com)."); return;
+      errors.push("Please enter a valid email address (e.g. name@gmail.com).");
     }
-    // Same contact number check
+    var phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(payload.phone)) {
+      errors.push("Contact number must be a valid 10-digit Indian mobile number.");
+    }
+    if (!phoneRegex.test(payload.altPhone)) {
+      errors.push("Alternative contact number must be a valid 10-digit Indian mobile number.");
+    }
     if (payload.phone === payload.altPhone) {
-      showError("Contact number and alternative contact number cannot be the same."); return;
+      errors.push("Contact number and alternative contact number cannot be the same.");
+    }
+    if (errors.length > 0) {
+      showError(errors.join("\n")); return;
     }
     form.style.display = "none";
     loading.style.display = "block";
@@ -1365,7 +1379,16 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     document.getElementById("regNumberDisplay").textContent = regNumber;
     success.style.display = "block";
   }
-  function showError(msg) { errorMsg.textContent = msg; errorMsg.classList.add("visible"); card.scrollTop = 0; }
+  function showError(msg) {
+    var lines = msg.split("\n").filter(function(l) { return l.trim(); });
+    if (lines.length > 1) {
+      errorMsg.innerHTML = lines.map(function(l) { return "• " + l; }).join("<br>");
+    } else {
+      errorMsg.textContent = msg;
+    }
+    errorMsg.classList.add("visible");
+    card.scrollTop = 0;
+  }
   function hideError() { errorMsg.classList.remove("visible"); errorMsg.textContent = ""; }
 
   function resetForm() {

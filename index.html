@@ -1164,7 +1164,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwco32h6sgHgWwQF10ioOl5Nm0DmxOqkz-gLwnxUJ_KhBuOBgtaSUvtI6sSjftYkQTg/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyA8mSL6tx43ulMBVrUX9_bXxMyvnM9raqu9BbTc60uPZW9eni7D1SN22X0dvIkSwvq/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1586,7 +1586,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* SUBMISSION POPUP — JAVASCRIPT                                 */
 /* ============================================================ */
 (function() {
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwco32h6sgHgWwQF10ioOl5Nm0DmxOqkz-gLwnxUJ_KhBuOBgtaSUvtI6sSjftYkQTg/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyA8mSL6tx43ulMBVrUX9_bXxMyvnM9raqu9BbTc60uPZW9eni7D1SN22X0dvIkSwvq/exec";
   var MAX_REEL_MB = 500;
   var MAX_ID_MB   = 5;
 
@@ -1743,6 +1743,8 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     if (!collegeEmail || !collegePhone || !contactType) { showError(uploadError, 'Please fill in all college contact details.'); return; }
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(collegeEmail)) { showError(uploadError, 'Please enter a valid college email address.'); return; }
+    var phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(collegePhone)) { showError(uploadError, 'College contact number must be a valid 10-digit Indian mobile/phone number.'); return; }
     if (!reelFile) { showError(uploadError, 'Please select your reel file.'); return; }
     if (!idFile)   { showError(uploadError, 'Please select your ID cards PDF.'); return; }
     if (!declaration) { showError(uploadError, 'Please agree to the declaration before submitting.'); return; }

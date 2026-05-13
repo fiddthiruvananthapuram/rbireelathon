@@ -1164,7 +1164,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBORL9r5ckNQsdWGTnuCh0TYrVhOUuFxNShOA7iDNS5aWhXzYZ-8QsLtIW3ZbDzqCV/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmGFy7KQIwf_1WlwlDCG_m9wCvw344Mq3lhDJHXMb38OprYFBqKvUKoqghSgH16-af/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1586,7 +1586,8 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* SUBMISSION POPUP — JAVASCRIPT                                 */
 /* ============================================================ */
 (function() {
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBORL9r5ckNQsdWGTnuCh0TYrVhOUuFxNShOA7iDNS5aWhXzYZ-8QsLtIW3ZbDzqCV/exec";
+  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbwmGFy7KQIwf_1WlwlDCG_m9wCvw344Mq3lhDJHXMb38OprYFBqKvUKoqghSgH16-af/exec";
+  var WORKER_URL  = "https://reelathon-upload.rbireelathon.workers.dev";
   var MAX_REEL_MB = 500;
   var MAX_ID_MB   = 5;
 
@@ -1775,42 +1776,35 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
         showError(uploadError, initData.message || 'Could not start upload. Please try again.');
         return;
       }
-      // Upload both files simultaneously
-      var reelDone = false; var idDone = false;
-      var reelFileId = ''; var idFileId = '';
 
       updateProgress(5, 'Uploading your files…');
       document.getElementById('subReelStatus').textContent = '🎬 Reel — uploading…';
       document.getElementById('subIdStatus').textContent = '📄 ID Cards — uploading…';
 
-      var reelPromise = uploadFileDirect(initData.reelSessionUri, reelFile, function(pct) {
+      // Upload both simultaneously via Cloudflare Worker
+      var reelPromise = uploadViaWorker(reelFile, initData.reelSessionUri, reelType, function(pct) {
         updateReelProgress(pct);
       });
-
-      var idPromise = uploadFileDirect(initData.idSessionUri, idFile, function(pct) {
+      var idPromise = uploadViaWorker(idFile, initData.idSessionUri, 'application/pdf', function(pct) {
         updateIdProgress(pct);
       });
 
       Promise.all([reelPromise, idPromise])
       .then(function(results) {
-        reelFileId = results[0];
-        idFileId   = results[1];
         updateProgress(95, 'Finalising submission…');
-
-        // Record in sheet
         return fetch(SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify({
-            action: 'completeSubmission',
+            action:       'completeSubmission',
             regNumber:    verifiedData.regNumber,
             collegeEmail: collegeEmail,
             collegePhone: collegePhone,
             contactType:  contactType,
             reelFileName: initData.reelFileName,
             idFileName:   initData.idFileName,
-            reelFileId:   reelFileId,
-            idFileId:     idFileId
+            reelFileId:   results[0],
+            idFileId:     results[1]
           })
         });
       })
@@ -1821,12 +1815,12 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
           setTimeout(function() { showStep(successStep); }, 600);
         } else {
           showStep(uploadStep);
-          showError(uploadError, finalData.message || 'Something went wrong recording your submission. Please contact rbireelathon@gmail.com');
+          showError(uploadError, finalData.message || 'Something went wrong. Please contact rbireelathon@gmail.com');
         }
       })
       .catch(function(err) {
         showStep(uploadStep);
-        showError(uploadError, 'Upload failed. Please check your connection and try again.');
+        showError(uploadError, 'Upload failed. Please check your connection and try again. (' + (err.message || '') + ')');
       });
     })
     .catch(function() {
@@ -1835,22 +1829,26 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     });
   });
 
-  // ---- Resumable upload direct to Drive ----
+  // ---- Resumable upload via Cloudflare Worker (CORS proxy) ----
   var reelPct = 0; var idPct = 0;
+  var CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
 
-  function uploadFileDirect(sessionUri, file, onProgress) {
+  function uploadViaWorker(file, sessionUri, mimeType, onProgress) {
     return new Promise(function(resolve, reject) {
-      var chunkSize = 5 * 1024 * 1024; // 5MB chunks
       var offset = 0;
       var fileId = '';
 
       function uploadChunk() {
-        var end = Math.min(offset + chunkSize, file.size);
+        var end   = Math.min(offset + CHUNK_SIZE, file.size);
         var chunk = file.slice(offset, end);
+
+        // Route through Cloudflare Worker to bypass CORS
+        var workerTarget = WORKER_URL + '?target=' + encodeURIComponent(sessionUri);
+
         var xhr = new XMLHttpRequest();
-        xhr.open('PUT', sessionUri, true);
-        xhr.setRequestHeader('Content-Range', 'bytes ' + offset + '-' + (end - 1) + '/' + file.size);
-        xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+        xhr.open('PUT', workerTarget, true);
+        xhr.setRequestHeader('Content-Range', 'bytes ' + offset + '-' + (end-1) + '/' + file.size);
+        xhr.setRequestHeader('Content-Type', mimeType);
 
         xhr.onload = function() {
           if (xhr.status === 200 || xhr.status === 201) {
@@ -1858,11 +1856,12 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
             onProgress(100);
             resolve(fileId);
           } else if (xhr.status === 308) {
+            // Resume Incomplete — continue
             offset = end;
             onProgress(Math.round((offset / file.size) * 100));
             uploadChunk();
           } else {
-            reject(new Error('Upload error: ' + xhr.status));
+            reject(new Error('Upload error status: ' + xhr.status));
           }
         };
 

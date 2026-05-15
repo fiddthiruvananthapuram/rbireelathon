@@ -1164,7 +1164,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmGFy7KQIwf_1WlwlDCG_m9wCvw344Mq3lhDJHXMb38OprYFBqKvUKoqghSgH16-af/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwB-tO8BjFOu5O9vL8iXUwrqABy4gmvhHCeogHXskMog_OJnqRYzCgT2uqfCeEMChOC/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1358,7 +1358,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
         if (data.message === "duplicate_email") {
           showError("This email address is already registered. Please check your inbox for your Registration ID.");
         } else if (data.message === "duplicate_phone") {
-          showError("This contact number is already registered. If this is an error, contact rbireelathon2026@gmail.com.");
+          showError("This contact number is already registered. If this is an error, contact rbireelathon@gmail.com.");
         } else {
           showError(data.message || "Something went wrong. Please try again.");
         }
@@ -1586,7 +1586,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* SUBMISSION POPUP — JAVASCRIPT                                 */
 /* ============================================================ */
 (function() {
-  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbwmGFy7KQIwf_1WlwlDCG_m9wCvw344Mq3lhDJHXMb38OprYFBqKvUKoqghSgH16-af/exec";
+  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbwB-tO8BjFOu5O9vL8iXUwrqABy4gmvhHCeogHXskMog_OJnqRYzCgT2uqfCeEMChOC/exec";
   var WORKER_URL  = "https://reelathon-upload.rbireelathon.workers.dev";
   var MAX_REEL_MB = 500;
   var MAX_ID_MB   = 5;

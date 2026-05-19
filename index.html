@@ -565,6 +565,83 @@ footer a{color:var(--gold);}
 
 .sub-error-msg { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 3px; color: var(--red); font-size: 0.78rem; padding: 12px 14px; margin-bottom: 16px; display: none; line-height: 1.55; }
 .sub-error-msg.visible { display: block; }
+
+/* ============================================================ */
+/* RULES POPUP — CSS                                             */
+/* ============================================================ */
+.rules-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85); z-index: 10000;
+  justify-content: center; align-items: center;
+  padding: 20px; backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.rules-overlay.active { display: flex; animation: fadeInOverlay 0.5s ease forwards; }
+
+.rules-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 4px; width: 100%; max-width: 620px;
+  max-height: 90vh; overflow-y: auto; padding: 40px 36px;
+  position: relative; transform: translateY(60px);
+  animation: slideUpCard 0.65s cubic-bezier(0.16,1,0.3,1) forwards;
+  scrollbar-width: thin; scrollbar-color: var(--gold) var(--card2);
+}
+.rules-card::-webkit-scrollbar { width: 5px; }
+.rules-card::-webkit-scrollbar-track { background: var(--card2); }
+.rules-card::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+.rules-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none; color: var(--gold);
+  font-size: 22px; cursor: pointer; padding: 4px 8px; transition: color 0.2s;
+}
+.rules-close:hover { color: var(--goldlt); }
+
+.rules-card-header {
+  text-align: center; margin-bottom: 28px;
+  padding-bottom: 20px; border-bottom: 1px solid var(--border2);
+}
+.rules-card-header h2 {
+  font-family: 'Cormorant SC', serif; color: var(--goldlt);
+  font-size: 1.25rem; letter-spacing: 0.1em; margin: 0 0 6px 0;
+}
+.rules-card-header p { color: var(--fg3); font-size: 0.78rem; margin: 0; }
+
+.full-rules-list { list-style: none; padding: 0; margin: 0; }
+.full-rules-list li {
+  display: flex; gap: 14px; padding: 14px 0;
+  border-bottom: 1px solid var(--border2); align-items: flex-start;
+}
+.full-rules-list li:last-child { border-bottom: none; }
+.full-rule-num {
+  font-family: 'Cormorant SC', serif; color: var(--gold);
+  font-size: 0.85rem; min-width: 28px; letter-spacing: 0.08em;
+  padding-top: 2px;
+}
+.full-rule-txt { color: var(--fg2); font-size: 0.82rem; line-height: 1.65; }
+.full-rule-txt ul { margin: 8px 0 0 0; padding: 0; list-style: none; }
+.full-rule-txt ul li { padding: 3px 0; padding-left: 14px; position: relative; }
+.full-rule-txt ul li::before { content: "•"; color: var(--gold); position: absolute; left: 0; }
+
+.rules-disclaimer {
+  margin-top: 20px; padding: 14px 16px;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 3px; color: var(--fg3); font-size: 0.75rem;
+  line-height: 1.6; font-style: italic;
+}
+.rules-note {
+  margin-top: 14px; padding: 12px 16px;
+  background: rgba(201,168,76,0.06); border: 1px solid var(--gold);
+  border-radius: 3px; color: var(--fg2); font-size: 0.78rem; line-height: 1.6;
+}
+.rules-back-btn {
+  margin-top: 24px; width: 100%; background: none;
+  border: 1px solid var(--gold); color: var(--gold);
+  padding: 12px; font-family: 'Cormorant SC', serif;
+  font-size: 0.82rem; letter-spacing: 0.12em; cursor: pointer;
+  border-radius: 3px; transition: all 0.2s;
+}
+.rules-back-btn:hover { background: rgba(201,168,76,0.1); color: var(--goldlt); }
 </style>
 </head>
 <body>
@@ -580,7 +657,7 @@ footer a{color:var(--gold);}
     <li><a href="#media">Watch</a></li>
     <li><a href="#themes">Themes</a></li>
     <li><a href="#schedule">Schedule</a></li>
-    <li><a href="#rules">Rules</a></li>
+    <li><a href="#" onclick="event.preventDefault();openRules();">Rules</a></li>
     <li><a href="#register">Register</a></li>
   </ul>
   <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">
@@ -605,11 +682,9 @@ footer a{color:var(--gold);}
     <div class="prize-slide active" data-rank="🥇 First Prize" data-amt="₹75,000"></div>
     <div class="prize-slide" data-rank="🥈 Second Prize" data-amt="₹50,000"></div>
     <div class="prize-slide" data-rank="🥉 Third Prize" data-amt="₹25,000"></div>
-    <div class="prize-slide" data-rank="📱 Most Views" data-amt="TBA"></div>
   </div>
   <div class="prize-dots" id="prizeDots">
     <div class="prize-dot active"></div>
-    <div class="prize-dot"></div>
     <div class="prize-dot"></div>
     <div class="prize-dot"></div>
   </div>
@@ -638,9 +713,9 @@ footer a{color:var(--gold);}
 
   <!-- Info pills -->
   <div class="hero-pills">
-    <div class="pill">Open to <span>UG Students — Kerala & Lakshadweep</span></div>
+    <div class="pill">Open to <span>UG &amp; PG Students — Kerala &amp; Lakshadweep</span></div>
     <div class="pill">Language <span>Malayalam</span></div>
-    <div class="pill">Last Date for Submission <span>July 30, 2026</span></div>
+    <div class="pill">Last Date for Submission <span>August 07, 2026</span></div>
   </div>
 
   <div class="scroll-cue"><div class="scroll-line"></div><span>Scroll</span></div>
@@ -663,16 +738,15 @@ footer a{color:var(--gold);}
 <div class="divider"></div>
 
 <!-- ABOUT -->
-<div id="about" class="section narrow center">
-  <span class="eyebrow reveal">About the Campaign</span>
-  <!-- EDIT: about lead -->
-  <p class="about-lead reveal">
-    Kerala and Lakshadweep's fight against<br>
-    <em>Illegitimate loan apps. Mule accounts. Digital fraud.</em>
-  </p>
+<div id="about" class="section narrow center" style="padding-top: 3rem;">
+  <span class="eyebrow reveal" style="font-size:clamp(1.12rem,1.4vw,1.28rem);">About the Campaign</span>
   <!-- EDIT: about body -->
   <p class="body-text reveal">
-    The Reserve Bank of India, Thiruvananthapuram believes the most powerful voices for change belong to you. Reelathon 2026 welcomes undergraduate students across Kerala and Lakshadweep to craft original Malayalam reels that spark awareness, build confidence, and empower communities to make smarter financial choices.
+    Cyber-enabled financial frauds are rising rapidly across Kerala, with students increasingly becoming both targets and influencers in the digital space. In this backdrop, the Reserve Bank of India, Thiruvananthapuram, seeks to harness the creativity and reach of young minds to spread awareness on critical cyber financial threats.
+  </p>
+  <!-- ABOUT SECOND PARA -->
+  <p class="body-text reveal">
+  Through RBI Reelathon 2026, a reel-making competition for college students across Kerala and Lakshadweep, participants are invited to create impactful short videos on themes such as illegitimate loan apps, mule accounts, and digital financial frauds. Beyond being a competition, the campaign aims to evolve into a large-scale social media awareness movement that empowers citizens to recognise, resist, and report cyber fraud.
   </p>
   <!-- ABOUT SECOND PARA — hidden until gala details confirmed. Uncomment when ready:
   <p class="body-text reveal">
@@ -740,7 +814,7 @@ footer a{color:var(--gold);}
 <div id="themes" class="section">
   <span class="eyebrow reveal">What to Create</span>
   <h2 class="section-h reveal">Choose Your <em>Theme</em></h2>
-  <p class="body-text reveal" style="margin-bottom:1.8rem;">Your reel must be based on one of the three themes below. Entries not aligned to a theme may not be evaluated.</p>
+  <p class="body-text reveal" style="margin-bottom:1.8rem;">Your reel must be based on the listed themes. Entries not aligned with the themes may be disqualified.</p>
   <div class="themes-stack reveal">
     <div class="theme-row"><div class="theme-alpha">A</div><div><p class="theme-name">Illegitimate Loan Apps</p><p class="theme-desc">Expose the dangers of unregulated digital lending — how they trap borrowers, misuse personal data, and destroy livelihoods.</p></div></div>
     <div class="theme-row"><div class="theme-alpha">B</div><div><p class="theme-name">Mule Accounts</p><p class="theme-desc">Shed light on how ordinary bank accounts are weaponised in fraud chains — and the devastating consequences for unsuspecting victims.</p></div></div>
@@ -755,11 +829,9 @@ footer a{color:var(--gold);}
   <span class="eyebrow reveal">Timeline</span>
   <h2 class="section-h reveal"><em>Key</em> Dates</h2>
   <div class="timeline reveal">
-    <div class="tl-item"><p class="tl-date">June 1–5, 2026</p><div><p class="tl-event">Inauguration Ceremony</p><p class="tl-note">Thiruvananthapuram · Exact date to be confirmed</p></div></div><!-- EDIT date -->
-    <div class="tl-item"><p class="tl-date">First Week of June 2026</p><div><p class="tl-event">Registrations Open</p><p class="tl-note">Official link activated on this page</p></div></div><!-- EDIT date -->
-    <div class="tl-item"><p class="tl-date">July 30, 2026 · 11:59 PM IST</p><div><p class="tl-event">Submission Deadline</p><p class="tl-note">Late entries will not be accepted under any circumstance</p></div></div><!-- EDIT date -->
-    <div class="tl-item"><p class="tl-date">Aug 14, 2026 · 6:00 PM IST</p><div><p class="tl-event">Instagram View Count Frozen</p><p class="tl-note">Views recorded at this timestamp for the Most Views Prize</p></div></div><!-- EDIT date -->
-    <div class="tl-item"><p class="tl-date">To Be Announced</p><div><p class="tl-event">Closing Ceremony & Results</p><p class="tl-note">Top entries screened live · Winners announced at the gala</p></div></div><!-- EDIT date -->
+    <div class="tl-item"><p class="tl-date">Jun 11, 2026 · 10:00 AM IST</p><div><p class="tl-event">Registrations Open</p><p class="tl-note">Official link activated on this page</p></div></div><!-- EDIT date -->
+    <div class="tl-item"><p class="tl-date">Aug 07, 2026 · 6:00 PM IST</p><div><p class="tl-event">Submission Deadline</p><p class="tl-note">Late entries will not be accepted under any circumstance</p></div></div><!-- EDIT date -->
+    <div class="tl-item"><p class="tl-date">To Be Announced</p><div><p class="tl-event">Closing Ceremony &amp; Results</p><p class="tl-note">Top entries screened live · Winners announced at the gala</p></div></div><!-- EDIT date -->
   </div>
 </div>
 
@@ -771,12 +843,12 @@ footer a{color:var(--gold);}
   <h2 class="section-h reveal">Submission <em>Specs</em></h2>
   <!-- EDIT: specs -->
   <div class="specs-list reveal">
-    <div class="spec-row"><span class="spec-ic">⏱</span><span class="spec-lbl">Max Duration</span><span class="spec-val">2 minutes 30 seconds</span></div>
+    <div class="spec-row"><span class="spec-ic">⏱</span><span class="spec-lbl">Max Duration</span><span class="spec-val">3 minutes</span></div>
     <div class="spec-row"><span class="spec-ic">🎬</span><span class="spec-lbl">Format</span><span class="spec-val">MP4 or MOV</span></div>
     <div class="spec-row"><span class="spec-ic">📐</span><span class="spec-lbl">Min Quality</span><span class="spec-val">720p</span></div>
     <div class="spec-row"><span class="spec-ic">💾</span><span class="spec-lbl">Max File Size</span><span class="spec-val">500 MB</span></div>
+    <div class="spec-row"><span class="spec-ic">📱</span><span class="spec-lbl">Orientation</span><span class="spec-val">Portrait / Vertical</span></div>
     <div class="spec-row"><span class="spec-ic">🗣</span><span class="spec-lbl">Language</span><span class="spec-val">Malayalam</span></div>
-    <div class="spec-row"><span class="spec-ic">🎭</span><span class="spec-lbl">Entry Credits</span><span class="spec-val">Submitted in the names of two members</span></div>
   </div>
 </div>
 
@@ -787,20 +859,25 @@ footer a{color:var(--gold);}
   <span class="eyebrow reveal">Before You Enter</span>
   <h2 class="section-h reveal">Rules &amp; <em>Guidelines</em></h2>
   <ul class="rules-list reveal">
-    <li class="rule-row"><span class="rule-num">01</span><span class="rule-txt">Open only to <strong>currently enrolled UG college students</strong> of Kerala and Lakshadweep.</span></li>
-    <li class="rule-row"><span class="rule-num">02</span><span class="rule-txt">Team members must be from <strong>the same college.</strong></span></li>
-    <li class="rule-row"><span class="rule-num">03</span><span class="rule-txt">Entries must be submitted in the names of <strong>two members.</strong> Valid college ID cards for both will be required.</span></li>
-    <li class="rule-row"><span class="rule-num">04</span><span class="rule-txt"><strong>One submission per team only.</strong> Multiple registrations by the same participants will result in disqualification.</span></li>
+    <li class="rule-row"><span class="rule-num">01</span><span class="rule-txt">Open only to <strong>currently enrolled UG &amp; PG college students</strong> of Kerala and Lakshadweep. There is no entry fee.</span></li>
+    <li class="rule-row"><span class="rule-num">02</span><span class="rule-txt">All team members must be from <strong>the same college.</strong></span></li>
+    <li class="rule-row"><span class="rule-num">03</span><span class="rule-txt">Entries to be made in the name of <strong>two members.</strong> Valid ID card of both will be required for submission.</span></li>
+    <li class="rule-row"><span class="rule-num">04</span><span class="rule-txt"><strong>One submission per team only.</strong> Multiple submissions may result in disqualification.</span></li>
     <li class="rule-row"><span class="rule-num">05</span><span class="rule-txt">Your reel must be an <strong>original creation made specifically for this competition</strong> — not previously submitted or published anywhere else.</span></li>
-    <li class="rule-row"><span class="rule-num">06</span><span class="rule-txt">Content must be based on <strong>one of the three listed themes.</strong> Entries not aligned to a theme may not be evaluated.</span></li>
-    <li class="rule-row"><span class="rule-num">07</span><span class="rule-txt"><strong>AI tools may be used</strong> for editing, graphics, subtitles, or voiceovers — but the concept, scripting, and performance must be original. Fully AI-generated entries will be disqualified.</span></li>
-    <li class="rule-row"><span class="rule-num">08</span><span class="rule-txt">Avoid <strong>misleading, offensive, defamatory, political, or promotional content.</strong> RBI's name or logo, if used, must be represented <strong>respectfully and appropriately.</strong></span></li>
-    <li class="rule-row"><span class="rule-num">09</span><span class="rule-txt">Entries will be judged on: <strong>Relevance to Theme · Creativity & Presentation · Clarity & Brevity · Overall Production Quality.</strong></span></li>
-    <li class="rule-row"><span class="rule-num">10</span><span class="rule-txt">Submit your reel along with <strong>college ID cards of both credited members</strong> and a signed declaration of originality and no copyright infringement.</span></li>
-    <li class="rule-row"><span class="rule-num">11</span><span class="rule-txt">Any attempt to influence the judging process will result in disqualification.</span></li>
-    <li class="rule-row"><span class="rule-num">12</span><span class="rule-txt">RBI reserves the right to use submitted reels for <strong>financial literacy awareness and outreach,</strong> with due credit to creators.</span></li>
-    <li class="rule-row"><span class="rule-num">13</span><span class="rule-txt">The decision of the judges shall be <strong>final and binding.</strong> No correspondence, in this regard, will be entertained.</span></li>
+    <li class="rule-row"><span class="rule-num">06</span><span class="rule-txt">Your reel must be based on the given themes. <strong>Entries not aligned with the themes may be disqualified.</strong></span></li>
+    <li class="rule-row"><span class="rule-num">07</span><span class="rule-txt">The concept, script, and performance must be original and your own. <strong>Fully AI-generated entries will be disqualified.</strong></span></li>
+    <li class="rule-row"><span class="rule-num">08</span><span class="rule-txt">Content should not be <strong>misleading, offensive, defamatory, political, or promotional</strong> in nature.</span></li>
+    <li class="rule-row"><span class="rule-num">09</span><span class="rule-txt">Entries will be judged on: <strong>Relevance to Theme · Creativity &amp; Presentation · Clarity &amp; Brevity.</strong></span></li>
+    <li class="rule-row"><span class="rule-num">10</span><span class="rule-txt">Submit your entries through <a href="#" onclick="event.preventDefault();if(typeof openSubmission==='function')openSubmission();" style="color:var(--gold);text-decoration:underline;">this portal</a> along with <strong>college ID cards of both registered members</strong> and your college contact info.</span></li>
   </ul>
+  <ul class="rules-list reveal">
+    <li class="rule-row"><span class="rule-num">11</span><span class="rule-txt">TDS is applicable on the prize money.</span></li>
+    <li class="rule-row"><span class="rule-num">12</span><span class="rule-txt">RBI reserves the right to use submitted reels for financial literacy and awareness initiatives.</span></li>
+    <li class="rule-row"><span class="rule-num">13</span><span class="rule-txt">The decision of the judges will be final and binding.</span></li>
+  </ul>
+  <div class="reveal" style="margin-top:1.2rem;">
+    <a href="#" onclick="event.preventDefault();openRules();" style="color:var(--gold);font-size:0.78rem;letter-spacing:0.06em;text-decoration:underline;font-family:'Jost',sans-serif;">View complete rules</a>
+  </div>
 </div>
 
 <div class="divider"></div>
@@ -808,14 +885,13 @@ footer a{color:var(--gold);}
 <!-- INSTAGRAM -->
 <div class="section">
   <span class="eyebrow reveal">Social Media</span>
-  <h2 class="section-h reveal">Compete for <em>Most Views</em></h2>
+  <h2 class="section-h reveal">Go Viral. <em>Win More.</em></h2>
   <div class="insta-box reveal">
-    <p class="body-text" style="margin-bottom:1.4rem;">After submission, post your reel on Instagram using these hashtags to compete for the Most Views Prize. Keep your account <strong>public</strong> from posting date through August 14, 2026.</p>
+    <p class="body-text" style="margin-bottom:1.4rem;">If you're posting your reel on Instagram, use <strong>#Reelathon2026 #YourRegistrationNumber</strong>.</p>
     <!-- EDIT: hashtags -->
     <div style="margin-bottom:1.4rem;"><span class="hashtag">#Reelathon2026</span><span class="hashtag">#YourRegistrationNumber</span></div>
     <p style="font-size:.82rem;color:var(--fg3);line-height:1.75;">
-      View count frozen on <strong style="color:var(--fg);">August 14, 2026 at 6:00 PM IST.</strong><br>
-      Artificially inflated or fake views will result in immediate disqualification.
+      There might just be a <strong style="color:var(--goldlt);">surprise</strong> waiting.
     </p>
   </div>
 </div>
@@ -829,7 +905,8 @@ footer a{color:var(--gold);}
   <div class="contact-box reveal">
     <!-- EDIT: contact details -->
     <div class="contact-row"><span class="ci">✉</span><span>Email: <a href="mailto:rbireelathon@gmail.com">rbireelathon@gmail.com</a></span></div>
-    <div class="contact-row"><span class="ci">📞</span><span>[Contact Number] &nbsp;·&nbsp; Mon–Fri, 9:30 AM – 5:30 PM</span></div><!-- EDIT phone -->
+    <div class="contact-row"><span class="ci">📞</span><span>0471-2783268 &nbsp;·&nbsp; Mon–Fri, 9:30 AM – 5:30 PM</span></div><!-- EDIT phone -->
+    <div class="contact-row"><span class="ci">📱</span><span>[Mobile number — coming soon] &nbsp;·&nbsp; Mon–Fri, 9:30 AM – 5:30 PM</span></div><!-- EDIT mobile -->
     <div class="contact-row"><span class="ci">🏛</span><span>Reserve Bank of India, Thiruvananthapuram Regional Office</span></div>
   </div>
 </div>
@@ -838,7 +915,7 @@ footer a{color:var(--gold);}
 <footer>
   <span class="brand">Reserve Bank of India · Thiruvananthapuram</span>
   © 2026 Reelathon · All rights reserved ·
-  <a href="#rules">Rules</a> · <a href="#contact">Get in Touch</a>
+  <a href="#" onclick="event.preventDefault();openRules();">Rules</a> · <a href="#contact">Get in Touch</a>
 </footer>
 
 <!-- ════════════════════════════════════
@@ -904,7 +981,7 @@ if (heroSubBtn) {
 /* ── 3. COUNTDOWN ─────────────────────────
    EDIT the deadline if it changes.
    Format: 'YYYY-MM-DDTHH:MM:SS+05:30' (IST) */
-const DEADLINE = new Date('2026-07-30T23:59:00+05:30'); // EDIT deadline
+const DEADLINE = new Date('2026-08-07T18:00:00+05:30'); // EDIT deadline — Aug 07 2026 6PM IST
 
 function tick() {
   const diff = DEADLINE - new Date();
@@ -1126,7 +1203,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
       <div class="reg-declaration" onclick="document.getElementById('reg_declaration').click()">
         <input type="checkbox" id="reg_declaration" name="declaration" onclick="event.stopPropagation()">
         <label for="reg_declaration" onclick="event.preventDefault()">
-          I have read and agree to all the rules and regulations of RBI Reelathon 2026.
+          I have read and agree to all the <a href="#" onclick="event.stopPropagation();event.preventDefault();openRules(true);" style="color:var(--gold);text-decoration:underline;">rules and regulations</a> of RBI Reelathon 2026.
           I confirm that all the information provided is accurate.
         </label>
       </div>
@@ -1164,7 +1241,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBG6E19Z-ne-_dW1p9eq1D8IcdYRPC5NkSlkn9wk-7yAVR8nAzo9UZHkvLdTN7hxK_/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNecMcbNmt2t742typ9f_NzoXN25AI6QHi5cXhE62cMIZOBOiYmdj3PuO0uRxqJ7kF/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1586,7 +1663,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* SUBMISSION POPUP — JAVASCRIPT                                 */
 /* ============================================================ */
 (function() {
-  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbzBG6E19Z-ne-_dW1p9eq1D8IcdYRPC5NkSlkn9wk-7yAVR8nAzo9UZHkvLdTN7hxK_/exec";
+  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbzNecMcbNmt2t742typ9f_NzoXN25AI6QHi5cXhE62cMIZOBOiYmdj3PuO0uRxqJ7kF/exec";
   var WORKER_URL  = "https://reelathon-upload.rbireelathon.workers.dev";
   var MAX_REEL_MB = 500;
   var MAX_ID_MB   = 5;
@@ -1902,6 +1979,164 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     if (msg) document.getElementById('subLoadingMsg').textContent = msg;
   }
 
+})();
+</script>
+
+
+<!-- ============================================================ -->
+<!-- FULL RULES POPUP                                              -->
+<!-- ============================================================ -->
+<div class="rules-overlay" id="rulesOverlay">
+  <div class="rules-card" id="rulesCard">
+    <button class="rules-close" id="rulesClose">&#x2715;</button>
+    <div class="rules-card-header">
+      <h2>Rules & Regulations</h2>
+      <p>RBI Reelathon 2026 &nbsp;·&nbsp; Thiruvananthapuram</p>
+    </div>
+
+    <ol class="full-rules-list">
+      <li>
+        <span class="full-rule-num">01</span>
+        <span class="full-rule-txt">The competition is open only to currently enrolled UG and PG students from recognised universities of Kerala and Lakshadweep. Participants below 18 years of age, if any, must obtain consent from a parent or guardian.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">02</span>
+        <span class="full-rule-txt">All team members must belong to the same college — cross-college teams aren't allowed.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">03</span>
+        <span class="full-rule-txt">Registration is to be submitted in the name of two members. Valid college ID cards of both will be required for submission.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">04</span>
+        <span class="full-rule-txt">Only one submission is permitted per team. Multiple submissions may lead to disqualification.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">05</span>
+        <span class="full-rule-txt">The reel submitted must be original and created specifically for this competition. Entries that have been previously published or submitted elsewhere will not be accepted.
+          <ul>
+            <li>Maximum duration: 3 minutes</li>
+            <li>Accepted formats: MP4 / MOV</li>
+            <li>Minimum quality: 720p</li>
+            <li>Maximum file size: 500 MB</li>
+            <li>Orientation: Portrait / Vertical</li>
+            <li>Language: Malayalam</li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span class="full-rule-num">06</span>
+        <span class="full-rule-txt">Entries must be based on the following themes. Entries not aligned with the themes may be disqualified.
+          <ul>
+            <li>Illegitimate Loan Apps</li>
+            <li>Mule Accounts</li>
+            <li>Digital Financial Frauds</li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span class="full-rule-num">07</span>
+        <span class="full-rule-txt">The concept, script, and performance must be original and your own creation. Fully AI-generated entries will be disqualified.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">08</span>
+        <span class="full-rule-txt">Any music, footage or other content used in the video must not infringe upon any third-party intellectual property rights.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">09</span>
+        <span class="full-rule-txt">Ensure that all individuals appearing in the reel have consented to filming and public sharing of the content.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">10</span>
+        <span class="full-rule-txt">Content should not be misleading, offensive, defamatory, political, or promotional in nature.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">11</span>
+        <span class="full-rule-txt">Entries will be evaluated based on:
+          <ul>
+            <li>Relevance to the theme</li>
+            <li>Creativity and presentation</li>
+            <li>Clarity and brevity</li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span class="full-rule-num">12</span>
+        <span class="full-rule-txt">Entries must be submitted through the official submission portal along with:
+          <ul>
+            <li>Reel file (MP4 / MOV)</li>
+            <li>College ID cards of both participants</li>
+            <li>Contact details of the college</li>
+          </ul>
+          <strong>Last date for submission: August 07, 2026 | 06:00 PM IST.</strong> Submission through any other channel is not permitted.
+        </span>
+      </li>
+      <li>
+        <span class="full-rule-num">13</span>
+        <span class="full-rule-txt"><strong>Prize Details:</strong>
+          <ul>
+            <li>1st Prize — ₹75,000</li>
+            <li>2nd Prize — ₹50,000</li>
+            <li>3rd Prize — ₹25,000</li>
+          </ul>
+          Applicable TDS will be deducted as per rules.
+        </span>
+      </li>
+      <li>
+        <span class="full-rule-num">14</span>
+        <span class="full-rule-txt">The decision of the judges will be final and binding. No correspondence, in this regard, will be entertained.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">15</span>
+        <span class="full-rule-txt">RBI reserves the right to use submitted entries for financial literacy and awareness initiatives.</span>
+      </li>
+    </ol>
+
+    <div class="rules-note">
+      If you're posting your reel on Instagram, use <strong>#Reelathon2026 #YourRegistrationNumber</strong>. There might just be a surprise waiting.
+    </div>
+
+    <div class="rules-disclaimer">
+      Disclaimer: The views and opinions expressed in the submitted reels are solely those of the participants and do not represent the views or policies of the Reserve Bank of India.
+    </div>
+
+    <button class="rules-back-btn" id="rulesBackBtn">CLOSE</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================ */
+/* RULES POPUP — JAVASCRIPT                                      */
+/* ============================================================ */
+(function() {
+  var overlay  = document.getElementById('rulesOverlay');
+  var closeBtn = document.getElementById('rulesClose');
+  var backBtn  = document.getElementById('rulesBackBtn');
+  var _fromReg = false;
+
+  window.openRules = function(fromReg) {
+    _fromReg = fromReg || false;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    // Update back button text
+    if (backBtn) backBtn.textContent = _fromReg ? '← BACK TO REGISTRATION' : 'CLOSE';
+  };
+
+  function closeRules() {
+    overlay.classList.remove('active');
+    // If opened from registration, don't restore body overflow
+    // since registration popup is still open underneath
+    if (!_fromReg) document.body.style.overflow = '';
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeRules);
+  if (backBtn)  backBtn.addEventListener('click', closeRules);
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeRules();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) closeRules();
+  });
 })();
 </script>
 

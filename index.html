@@ -1698,18 +1698,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     if (prefillReg)   document.getElementById('sub_regnum').value = prefillReg.toUpperCase();
   };
 
-  // Check URL params for deep link from registration email
-  (function() {
-    var params = new URLSearchParams(window.location.search);
-    if (params.get('submit') === 'true') {
-      var email = params.get('email') || '';
-      var reg   = params.get('reg')   || '';
-      // Small delay to let page fully load
-      setTimeout(function() {
-        window.openSubmission(email, reg);
-      }, 800);
-    }
-  })();
+
 
   function closePopup() {
     overlay.classList.remove('active');
@@ -2210,5 +2199,23 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 })();
 </script>
 
+
+<script>
+/* Deep link handler — opens submission popup with pre-filled fields from email link */
+window.addEventListener('load', function() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('submit') === 'true') {
+      var email = params.get('email') || '';
+      var reg   = params.get('reg')   || '';
+      setTimeout(function() {
+        if (typeof window.openSubmission === 'function') {
+          window.openSubmission(email, reg);
+        }
+      }, 1000);
+    }
+  } catch(e) {}
+});
+</script>
 </body>
 </html>

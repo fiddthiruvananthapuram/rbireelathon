@@ -667,7 +667,7 @@ footer a{color:var(--gold);}
 </nav>
 
 <!-- HERO -->
-<div id="top" class="hero">
+<div id="top" class="hero" style="overflow:hidden;">
   <div class="hero-glow"></div>
   <!-- EDIT: organiser -->
   <p class="hero-eyebrow">Reserve Bank of India · Thiruvananthapuram</p>
@@ -904,7 +904,7 @@ footer a{color:var(--gold);}
   <h2 class="section-h reveal">Have <em>Questions?</em></h2>
   <div class="contact-box reveal">
     <!-- EDIT: contact details -->
-    <div class="contact-row"><span class="ci">✉</span><span>Email: <a href="mailto:rbireelathon@gmail.com">rbireelathon@gmail.com</a></span></div>
+    <div class="contact-row"><span class="ci">✉</span><span>Email: <a href="mailto:rbireelathon@gmail.com" style="color:var(--gold);text-decoration:underline;">rbireelathon@gmail.com</a></span></div>
     <div class="contact-row"><span class="ci">📞</span><span>0471-2783268 &nbsp;·&nbsp; Mon–Fri, 9:30 AM – 5:30 PM</span></div><!-- EDIT phone -->
     <div class="contact-row"><span class="ci">📱</span><span>[Mobile number — coming soon] &nbsp;·&nbsp; Mon–Fri, 9:30 AM – 5:30 PM</span></div><!-- EDIT mobile -->
     <div class="contact-row"><span class="ci">🏛</span><span>Reserve Bank of India, Thiruvananthapuram Regional Office</span></div>
@@ -1593,6 +1593,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
           <div class="sub-file-icon">🎬</div>
           <p>Click to select your reel file</p>
           <p class="sub-file-limit">MP4 or MOV · Max 500 MB · Min 720p</p>
+          <p class="sub-file-limit" style="margin-top:4px; color:var(--fg3);">For best results, export as MP4 from CapCut or HandBrake before uploading.</p>
           <div class="sub-file-name" id="reelFileName"></div>
         </div>
         <input type="file" id="sub_reel" accept=".mp4,.mov,video/mp4,video/quicktime" style="display:none">
@@ -1614,10 +1615,29 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
         <input type="checkbox" id="sub_declaration" onclick="event.stopPropagation()">
         <label for="sub_declaration" onclick="event.preventDefault()">
           I declare that this entry is our original work, has not been published or submitted elsewhere,
-          and does not infringe any copyright. I agree to all the rules and regulations of RBI Reelathon 2026.
+          and does not infringe any copyright. I agree to all the <a href="#" onclick="event.stopPropagation();event.preventDefault();openRules(true);" style="color:var(--gold);text-decoration:underline;">rules and regulations</a> of RBI Reelathon 2026.
+        </label>
+      </div>
+      <div class="sub-declaration" onclick="document.getElementById('sub_declaration2').click()">
+        <input type="checkbox" id="sub_declaration2" onclick="event.stopPropagation()">
+        <label for="sub_declaration2" onclick="event.preventDefault()">
+          I/We hereby declare that the submitted reel does not contain any defamatory, misleading, political, or promotional content, and does not infringe upon any third-party rights. The views expressed in the reel are solely our own and do not represent the views or policies of the Reserve Bank of India. The Reserve Bank of India shall not be held liable for any claims or disputes arising from the content of this submission.
         </label>
       </div>
 
+      <!-- Mobile network advisory -->
+      <input type="hidden" id="mobileAdvisoryShown" value="">
+      <div id="subMobileAdvisory" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.92);z-index:100;border-radius:4px;align-items:center;justify-content:center;padding:28px;">
+        <div style="text-align:center;">
+          <div style="font-size:1.8rem;margin-bottom:14px;">📶</div>
+          <h4 style="font-family:'Cormorant SC',serif;color:var(--goldlt);font-size:1rem;letter-spacing:0.08em;margin:0 0 12px;">Large File on Mobile Data</h4>
+          <p style="color:var(--fg2);font-size:0.8rem;line-height:1.65;margin-bottom:20px;">Your file is <strong id="advisoryFileSize"></strong>. Uploading large files on mobile data can be slow or unstable.<br><br>For the best experience, we recommend switching to a <strong>WiFi network</strong> before uploading.</p>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button onclick="document.getElementById('subMobileAdvisory').style.display='none';" style="background:linear-gradient(135deg,var(--golddm),var(--gold));color:#fff;border:none;border-radius:3px;padding:10px 20px;font-family:'Cormorant SC',serif;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">I'll Switch to WiFi</button>
+            <button onclick="document.getElementById('subMobileAdvisory').style.display='none';document.getElementById('subUploadBtn').click();" style="background:none;border:1px solid var(--border);color:var(--fg3);border-radius:3px;padding:10px 20px;font-family:'Cormorant SC',serif;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">Continue Anyway</button>
+          </div>
+        </div>
+      </div>
       <button class="sub-submit" id="subUploadBtn">Submit Entry</button>
     </div>
 
@@ -1642,7 +1662,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
         <h3 style="font-family:Cormorant SC,serif; color:var(--goldlt); font-size:1.1rem; margin:0 0 10px; letter-spacing:0.08em;">Entry Already Received</h3>
         <p style="color:var(--fg2); font-size:0.82rem;">Your team's entry has already been successfully submitted.</p>
         <div style="font-family:Cormorant SC,serif; color:var(--gold); font-size:1.2rem; letter-spacing:0.1em; padding: 12px 20px; border: 1px solid var(--gold); display:inline-block; margin: 16px 0;" id="subAlreadyReg"></div>
-        <p style="color:var(--fg3); font-size:0.76rem;">Only one submission is allowed per team.<br>If you believe this is an error, contact rbireelathon@gmail.com</p>
+        <p style="color:var(--fg3); font-size:0.76rem;">Only one submission is allowed per team.<br>If you believe this is an error, contact <a href="mailto:rbireelathon@gmail.com" style="color:var(--gold);text-decoration:underline;">rbireelathon@gmail.com</a></p>
       </div>
     </div>
 
@@ -1653,6 +1673,19 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
       <p>Your reel has been successfully received.</p>
       <p style="color:var(--fg3); font-size:0.77rem; margin-top:10px;">A confirmation email has been sent to your registered email address.<br>Please check your inbox (and spam folder).</p>
       <p style="color:var(--fg3); font-size:0.75rem; margin-top:14px;">Best of luck to your team!</p>
+    </div>
+
+    <!-- Exit confirm overlay — shown during upload -->
+    <div id="subExitConfirm" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.92);z-index:100;border-radius:4px;display:none;align-items:center;justify-content:center;padding:28px;">
+      <div style="text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:14px;">⚠️</div>
+        <h4 style="font-family:'Cormorant SC',serif;color:var(--goldlt);font-size:1rem;letter-spacing:0.08em;margin:0 0 12px;">Upload in Progress</h4>
+        <p style="color:var(--fg2);font-size:0.8rem;line-height:1.6;margin-bottom:20px;">If you close now, your upload will be cancelled and you will need to start over.<br>Are you sure you want to exit?</p>
+        <div style="display:flex;gap:12px;justify-content:center;">
+          <button id="subExitCancel" style="background:linear-gradient(135deg,var(--golddm),var(--gold));color:#fff;border:none;border-radius:3px;padding:10px 20px;font-family:'Cormorant SC',serif;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">Continue Uploading</button>
+          <button id="subExitConfirmBtn" style="background:none;border:1px solid var(--border);color:var(--fg3);border-radius:3px;padding:10px 20px;font-family:'Cormorant SC',serif;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">Cancel &amp; Exit</button>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -1709,11 +1742,21 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 
   function safeClose() {
     if (_isUploading) {
-      var confirm = window.confirm('Your upload is in progress.\n\nIf you close now, the upload will be cancelled and you will need to start over.\n\nDo you want to cancel the upload and close?');
-      if (!confirm) return;
-      // Reset upload state
-      _isUploading = false;
-      window.onbeforeunload = null;
+      // Show styled exit confirm instead of browser alert
+      var exitDiv = document.getElementById('subExitConfirm');
+      if (exitDiv) {
+        exitDiv.style.display = 'flex';
+        document.getElementById('subExitCancel').onclick = function() {
+          exitDiv.style.display = 'none';
+        };
+        document.getElementById('subExitConfirmBtn').onclick = function() {
+          exitDiv.style.display = 'none';
+          _isUploading = false;
+          window.onbeforeunload = null;
+          closePopup();
+        };
+      }
+      return;
     }
     closePopup();
   }
@@ -1752,6 +1795,9 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
       document.getElementById('reelDropArea').classList.remove('has-file'); return;
     }
     document.getElementById('reelFileName').textContent = file.name + '  ·  ' + formatFileSize(file.size) + '  ·  ' + getFileExt(file.name);
+    // Update advisory file size
+    var advisoryEl = document.getElementById('advisoryFileSize');
+    if (advisoryEl) advisoryEl.textContent = formatFileSize(file.size);
     document.getElementById('reelDropArea').classList.add('has-file');
     hideError(uploadError);
   });
@@ -1837,6 +1883,17 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
   // ---- Step 3: Upload ----
   document.getElementById('subUploadBtn').addEventListener('click', function() {
     hideError(uploadError);
+    _uploadAttempts++;
+
+    // Mobile network advisory for large files
+    var reelSizeMB = reelInput.files[0] ? reelInput.files[0].size / (1024 * 1024) : 0;
+    var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    var isMobile = connection && (connection.type === 'cellular' || connection.effectiveType === '2g' || connection.effectiveType === '3g');
+    if (reelSizeMB > 100 && isMobile && !document.getElementById('mobileAdvisoryShown')) {
+      document.getElementById('subMobileAdvisory').style.display = 'flex';
+      document.getElementById('mobileAdvisoryShown').value = '1';
+      return;
+    }
 
     var collegeEmail = document.getElementById('sub_college_email').value.trim();
     var collegePhone = document.getElementById('sub_college_phone').value.trim();
@@ -1852,7 +1909,9 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     if (!phoneRegex.test(collegePhone)) { showError(uploadError, 'College contact number must be a valid 10-digit Indian mobile/phone number.'); return; }
     if (!reelFile) { showError(uploadError, 'Please select your reel file.'); return; }
     if (!idFile)   { showError(uploadError, 'Please select your ID cards PDF.'); return; }
-    if (!declaration) { showError(uploadError, 'Please agree to the declaration before submitting.'); return; }
+    var declaration2 = document.getElementById('sub_declaration2').checked;
+    if (!declaration) { showError(uploadError, 'Please agree to the first declaration before submitting.'); return; }
+    if (!declaration2) { showError(uploadError, 'Please agree to the second declaration before submitting.'); return; }
 
     var reelExt  = reelFile.name.split('.').pop().toLowerCase();
     var reelType = reelFile.type || 'video/mp4';
@@ -1929,7 +1988,8 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
         _isUploading = false;
         window.onbeforeunload = null;
         showStep(uploadStep);
-        showError(uploadError, 'Upload failed. Please check your connection and try again.');
+        var msg = getProgressiveErrorMsg(_uploadAttempts, err);
+        showError(uploadError, msg);
       });
     })
     .catch(function() {
@@ -1940,7 +2000,8 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 
   // ---- Resumable upload via Cloudflare Worker (CORS proxy) ----
   var reelPct = 0; var idPct = 0;
-  var CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
+  var _uploadAttempts = 0;
+  var CHUNK_SIZE = 10 * 1024 * 1024; // 10MB chunks
 
   function uploadViaWorker(file, sessionUri, mimeType, onProgress) {
     return new Promise(function(resolve, reject) {
@@ -1970,11 +2031,15 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
             onProgress(Math.round((offset / file.size) * 100));
             uploadChunk();
           } else {
-            reject(new Error('Upload error status: ' + xhr.status));
+            var chunkIdx = Math.floor(offset / CHUNK_SIZE);
+            reject(new Error('Upload error status: ' + xhr.status + (chunkIdx === 0 ? ' chunk 0' : '')));
           }
         };
 
-        xhr.onerror = function() { reject(new Error('Network error during upload')); };
+        xhr.onerror = function() {
+          var chunkIdx = Math.floor(offset / CHUNK_SIZE);
+          reject(new Error('Network error during upload' + (chunkIdx === 0 ? ' chunk 0' : '')));
+        };
         xhr.send(chunk);
       }
 
@@ -1996,6 +2061,23 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     if (pct >= 100) { el.innerHTML = '📄 ID Cards — <span class="done">done ✓</span>'; }
     else { el.textContent = '📄 ID Cards — ' + pct + '%'; }
     recalcOverall();
+  }
+
+  // Progressive error messages based on attempt count
+  function getProgressiveErrorMsg(attempts, err) {
+    var isFirstChunk = err && err.message && err.message.indexOf('chunk 0') > -1;
+    if (isFirstChunk) {
+      return 'Your file may be in a format that is causing issues. Please try converting it to MP4 using CapCut or HandBrake (both free) before uploading.';
+    }
+    if (attempts <= 1) {
+      return 'Upload failed. Please check your connection and try again.';
+    } else if (attempts === 2) {
+      return 'Still having trouble? Make sure you are on a stable connection. WiFi is recommended for large files.';
+    } else if (attempts === 3) {
+      return 'Your file may be in a format that is causing issues. Try converting it to MP4 using CapCut or HandBrake (both free apps) before uploading.';
+    } else {
+      return 'If the issue persists, please reach out to us at rbireelathon@gmail.com or call 0471-2783268 and we will assist you.';
+    }
   }
 
   // Confirm submission with retry — separate from file upload

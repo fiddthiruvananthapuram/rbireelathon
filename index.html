@@ -718,6 +718,30 @@ footer a{color:var(--gold);}
 @media (max-width: 600px) {
   .video-popup-close { top: -38px; }
 }
+
+/* ============================================================ */
+/* ACCESSIBILITY — Focus indicators for keyboard navigation      */
+/* ============================================================ */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.btn-p:focus-visible, .btn-g:focus-visible {
+  outline: 2px solid var(--goldlt);
+  outline-offset: 3px;
+}
+/* Skip-to-content link for keyboard/screen reader users */
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--gold); color: #000; padding: 10px 18px;
+  z-index: 99999; font-size: 0.85rem; font-weight: 600;
+  border-radius: 0 0 4px 0;
+}
+.skip-link:focus {
+  left: 0;
+}
 </style>
 </head>
 <body>
@@ -791,7 +815,7 @@ footer a{color:var(--gold);}
   <div class="hero-pills">
     <div class="pill">Open to <span>UG &amp; PG Students — Kerala &amp; Lakshadweep</span></div>
     <div class="pill">Language <span>Malayalam</span></div>
-    <div class="pill">Last Date for Submission <span>August 10, 2026</span></div>
+    <div class="pill">Last Date for Submission <span>August 15, 2026</span></div>
   </div>
 
   <div class="scroll-cue"><div class="scroll-line"></div><span>Scroll</span></div>
@@ -860,18 +884,18 @@ footer a{color:var(--gold);}
 
       <!-- POSTER 1 -->
       <div class="carousel-item">
-        <img src="Poster_1.jpg" alt="RBI Reelathon 2026 Official Poster" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:#0a0a0a;">
+        <img src="Poster_1.jpg" alt="RBI Reelathon 2026 Official Poster" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:var(--golddm);">
       </div>
 
       <!-- POSTER 2 -->
       <div class="carousel-item">
-        <img src="Poster_2.jpg" alt="RBI Reelathon 2026 Campaign Poster" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:#0a0a0a;">
+        <img src="Poster_2.jpg" alt="RBI Reelathon 2026 Campaign Poster" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:var(--golddm);">
       </div>
 
     </div>
 
-    <button class="carousel-btn carousel-prev" id="carPrev">&#8592;</button>
-    <button class="carousel-btn carousel-next" id="carNext">&#8594;</button>
+    <button class="carousel-btn carousel-prev" id="carPrev" aria-label="Previous slide">&#8592;</button>
+    <button class="carousel-btn carousel-next" id="carNext" aria-label="Next slide">&#8594;</button>
   </div>
 
   <div class="carousel-dots" id="carDots"></div>
@@ -900,7 +924,7 @@ footer a{color:var(--gold);}
   <h2 class="section-h reveal"><em>Key</em> Dates</h2>
   <div class="timeline reveal">
     <div class="tl-item"><p class="tl-date">Jun 15, 2026</p><div><p class="tl-event">Inauguration &amp; Registrations Open</p><p class="tl-note">Competition officially launched · Register now</p></div></div><!-- EDIT date -->
-    <div class="tl-item"><p class="tl-date">Aug 10, 2026 · 11:59 PM IST</p><div><p class="tl-event">Submission Deadline</p><p class="tl-note">Late entries will not be accepted under any circumstance</p></div></div><!-- EDIT date -->
+    <div class="tl-item"><p class="tl-date">Aug 15, 2026 · 11:59 PM IST</p><div><p class="tl-event">Submission Deadline</p><p class="tl-note">Late entries will not be accepted under any circumstance</p></div></div><!-- EDIT date -->
     <div class="tl-item"><p class="tl-date">To Be Announced</p><div><p class="tl-event">Closing Ceremony &amp; Results</p><p class="tl-note">Top entries screened live · Winners announced at the gala</p></div></div><!-- EDIT date -->
   </div>
 </div>
@@ -1051,7 +1075,7 @@ if (heroSubBtn) {
 /* ── 3. COUNTDOWN ─────────────────────────
    EDIT the deadline if it changes.
    Format: 'YYYY-MM-DDTHH:MM:SS+05:30' (IST) */
-const DEADLINE = new Date('2026-08-10T23:59:00+05:30'); // EDIT deadline — Aug 10 2026 11:59PM IST
+const DEADLINE = new Date('2026-08-15T23:59:00+05:30'); // EDIT deadline — Aug 10 2026 11:59PM IST
 
 function tick() {
   const diff = DEADLINE - new Date();
@@ -1331,7 +1355,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9HJYPiwmXMSnHWPOKgSs2O9ncng8vl9AAFqp0Mmsp553G6-MEL_cUBYLSaRe2dnsU/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwumB18rNbTuXMHBqJjm3vYTRQHK8xIbYsKxJ8k1Aj4rjcwFGFV5mWTmpKDYhftvhit/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1597,7 +1621,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 <!-- ============================================================ -->
 <div class="sub-overlay" id="subOverlay">
   <div class="sub-card" id="subCard">
-    <button class="sub-close" id="subClose">&#x2715;</button>
+    <button class="sub-close" id="subClose" aria-label="Close submission form">&#x2715;</button>
     <div class="sub-header">
       <h2>Submit Entry</h2>
       <p>RBI Reelathon 2026 &nbsp;·&nbsp; Thiruvananthapuram</p>
@@ -1681,25 +1705,25 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 
       <div class="sub-section-label">Your Reel</div>
       <div class="sub-field">
-        <div class="sub-file-area" id="reelDropArea" onclick="document.getElementById('sub_reel').click()">
+        <div class="sub-file-area" id="reelDropArea" onclick="document.getElementById('sub_reel').click()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('sub_reel').click();}" aria-label="Select reel video file">
           <div class="sub-file-icon">🎬</div>
           <p>Click to select your reel file</p>
           <p class="sub-file-limit">MP4 or MOV · Max 500 MB · Min 720p</p>
           <p class="sub-file-limit" style="margin-top:4px; color:var(--fg3);">For best results, export as MP4 from CapCut or HandBrake before uploading.</p>
           <div class="sub-file-name" id="reelFileName"></div>
         </div>
-        <input type="file" id="sub_reel" accept=".mp4,.mov,video/mp4,video/quicktime" style="display:none">
+        <input type="file" id="sub_reel" accept=".mp4,.mov,video/mp4,video/quicktime" style="display:none" aria-label="Select reel video file">
       </div>
 
       <div class="sub-section-label">College ID Cards</div>
       <div class="sub-field">
-        <div class="sub-file-area" id="idDropArea" onclick="document.getElementById('sub_id').click()">
+        <div class="sub-file-area" id="idDropArea" onclick="document.getElementById('sub_id').click()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('sub_id').click();}" aria-label="Select ID cards PDF file">
           <div class="sub-file-icon">📄</div>
           <p>Click to select your ID cards PDF</p>
           <p class="sub-file-limit">Single PDF with both ID cards · Max 5 MB</p>
           <div class="sub-file-name" id="idFileName"></div>
         </div>
-        <input type="file" id="sub_id" accept=".pdf,application/pdf" style="display:none">
+        <input type="file" id="sub_id" accept=".pdf,application/pdf" style="display:none" aria-label="Select ID cards PDF file">
       </div>
 
       <div class="sub-section-label">Declaration</div>
@@ -1788,7 +1812,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* SUBMISSION POPUP — JAVASCRIPT                                 */
 /* ============================================================ */
 (function() {
-  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbz9HJYPiwmXMSnHWPOKgSs2O9ncng8vl9AAFqp0Mmsp553G6-MEL_cUBYLSaRe2dnsU/exec";
+  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbwumB18rNbTuXMHBqJjm3vYTRQHK8xIbYsKxJ8k1Aj4rjcwFGFV5mWTmpKDYhftvhit/exec";
   var WORKER_URL  = "https://reelathon-upload.rbireelathon.workers.dev";
   var MAX_REEL_MB = 500;
   var MAX_ID_MB   = 5;
@@ -2219,7 +2243,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 <!-- ============================================================ -->
 <div class="rules-overlay" id="rulesOverlay">
   <div class="rules-card" id="rulesCard">
-    <button class="rules-close" id="rulesClose">&#x2715;</button>
+    <button class="rules-close" id="rulesClose" aria-label="Close rules">&#x2715;</button>
     <div class="rules-card-header">
       <h2>Rules & Regulations</h2>
       <p>RBI Reelathon 2026 &nbsp;·&nbsp; Thiruvananthapuram</p>
@@ -2299,7 +2323,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
             <li>College ID cards of both participants</li>
             <li>Contact details of the college</li>
           </ul>
-          <strong>Last date for submission: August 10, 2026 | 11:59 PM IST.</strong> Submission through any other channel is not permitted.
+          <strong>Last date for submission: August 15, 2026 | 11:59 PM IST.</strong> Submission through any other channel is not permitted.
         </span>
       </li>
       <li>
@@ -2400,8 +2424,8 @@ window.addEventListener('load', function() {
 <!-- ============================================================ -->
 <div class="video-popup-overlay" id="videoPopupOverlay">
   <div class="video-popup-card" id="videoPopupCard">
-    <button class="video-popup-close" id="videoPopupClose">&#x2715;</button>
-    <button class="video-popup-fullscreen" id="videoPopupFullscreen" title="Fullscreen">&#x26F6;</button>
+    <button class="video-popup-close" id="videoPopupClose" aria-label="Close video">&#x2715;</button>
+    <button class="video-popup-fullscreen" id="videoPopupFullscreen" title="Fullscreen" aria-label="Watch fullscreen">&#x26F6;</button>
     <div class="video-popup-frame" id="videoPopupFrame"></div>
   </div>
 </div>

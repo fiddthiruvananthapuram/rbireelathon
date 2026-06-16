@@ -143,6 +143,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 .carousel-item img{width:100%;height:100%;object-fit:cover;}
 .car-ph{display:flex;flex-direction:column;align-items:center;gap:.6rem;color:var(--fg3);padding:2rem;text-align:center;}
 .car-ph .ic{font-size:2.2rem;opacity:.3;}.car-ph p{font-size:.78rem;line-height:1.55;opacity:.45;}
+.poster-img{background:#080808;}
+[data-theme="light"] .poster-img{background:#EFE7D6;}
 .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(8,8,8,.55);border:1px solid var(--border);color:var(--gold);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;z-index:10;transition:all .2s;backdrop-filter:blur(8px);}
 [data-theme="light"] .carousel-btn{background:rgba(253,250,244,.75);}
 .carousel-btn:hover{background:rgba(201,168,76,.2);border-color:var(--gold);}
@@ -884,12 +886,12 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 
       <!-- POSTER 1 -->
       <div class="carousel-item">
-        <img src="Poster_1.jpg" alt="RBI Reelathon 2026 Official Poster" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:var(--golddm);">
+        <img src="Poster_1.jpg" alt="RBI Reelathon 2026 Official Poster" loading="lazy" class="poster-img" style="width:100%;height:100%;object-fit:contain;">
       </div>
 
       <!-- POSTER 2 -->
       <div class="carousel-item">
-        <img src="Poster_2.jpg" alt="RBI Reelathon 2026 Campaign Poster" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:var(--golddm);">
+        <img src="Poster_2.jpg" alt="RBI Reelathon 2026 Campaign Poster" loading="lazy" class="poster-img" style="width:100%;height:100%;object-fit:contain;">
       </div>
 
     </div>

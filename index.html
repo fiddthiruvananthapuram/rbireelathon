@@ -642,6 +642,67 @@ footer a{color:var(--gold);}
   border-radius: 3px; transition: all 0.2s;
 }
 .rules-back-btn:hover { background: rgba(201,168,76,0.1); color: var(--goldlt); }
+
+/* ============================================================ */
+/* LAZY-LOADED PROMO VIDEO — CSS                                */
+/* ============================================================ */
+.lazy-video-wrap {
+  width: 100%; height: 100%; position: relative;
+  background: var(--bg2); display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.lazy-video-thumb {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; cursor: pointer;
+  background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(0,0,0,0.3));
+  transition: background 0.3s;
+}
+.lazy-video-thumb:hover { background: linear-gradient(135deg, rgba(201,168,76,0.14), rgba(0,0,0,0.3)); }
+.lazy-play-btn {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(201,168,76,0.15); border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 22px; padding-left: 4px;
+  transition: transform 0.2s, background 0.2s;
+}
+.lazy-video-thumb:hover .lazy-play-btn { transform: scale(1.08); background: rgba(201,168,76,0.25); }
+.lazy-video-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+/* ============================================================ */
+/* PROMO VIDEO POPUP — CSS                                       */
+/* ============================================================ */
+.video-popup-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.92); z-index: 10000;
+  justify-content: center; align-items: center;
+  padding: 20px; backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.video-popup-overlay.active { display: flex; animation: fadeInOverlay 0.4s ease forwards; }
+.video-popup-card {
+  position: relative; width: 100%; max-width: 900px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 6px; padding: 16px;
+  transform: translateY(40px);
+  animation: slideUpCard 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.video-popup-close {
+  position: absolute; top: -42px; right: 0;
+  background: none; border: 1px solid var(--gold); color: var(--gold);
+  width: 34px; height: 34px; border-radius: 50%;
+  cursor: pointer; font-size: 16px; transition: all 0.2s;
+}
+.video-popup-close:hover { background: rgba(201,168,76,0.15); }
+.video-popup-frame {
+  position: relative; width: 100%; padding-top: 56.25%; /* 16:9 ratio */
+  background: #000; border-radius: 4px; overflow: hidden;
+}
+.video-popup-frame iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+}
+@media (max-width: 600px) {
+  .video-popup-close { top: -38px; }
+}
 </style>
 </head>
 <body>
@@ -715,7 +776,7 @@ footer a{color:var(--gold);}
   <div class="hero-pills">
     <div class="pill">Open to <span>UG &amp; PG Students — Kerala &amp; Lakshadweep</span></div>
     <div class="pill">Language <span>Malayalam</span></div>
-    <div class="pill">Last Date for Submission <span>August 07, 2026</span></div>
+    <div class="pill">Last Date for Submission <span>August 10, 2026</span></div>
   </div>
 
   <div class="scroll-cue"><div class="scroll-line"></div><span>Scroll</span></div>
@@ -765,37 +826,24 @@ footer a{color:var(--gold);}
   <div class="carousel-wrap reveal" id="carousel">
     <div class="carousel-track" id="carTrack">
 
-      <!--
-      ═══════════════════════════════════
-      EMBED VIDEO 1
-      When ready: delete car-ph div,
-      uncomment the iframe below.
-      ═══════════════════════════════════
-      <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-        allowfullscreen allow="autoplay; encrypted-media; picture-in-picture">
-      </iframe>
-      -->
-      <div class="carousel-item">
-        <div class="car-ph"><span class="ic">🎬</span><p>Promo Video 1<br>Coming Soon</p></div>
+      <!-- PROMO VIDEO — Vimeo embed with lazy loading (loads only when scrolled into view) -->
+      <div class="carousel-item" id="videoSlide">
+        <div class="lazy-video-wrap" id="lazyVideoWrap" data-vimeo-id="1201667468">
+          <div class="lazy-video-thumb" id="lazyVideoThumb">
+            <span class="lazy-play-btn">&#9658;</span>
+            <p style="margin-top:14px;color:var(--fg2);font-size:0.82rem;letter-spacing:0.04em;">Tap to play promo video</p>
+          </div>
+        </div>
       </div>
 
-      <!-- EMBED VIDEO 2 (delete slide if not needed) -->
+      <!-- POSTER 1 -->
       <div class="carousel-item">
-        <div class="car-ph"><span class="ic">🎬</span><p>Promo Video 2<br>Coming Soon</p></div>
+        <img src="poster_1.jpg" alt="RBI Reelathon 2026 Official Poster" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:var(--bg2);">
       </div>
 
-      <!--
-      EMBED POSTER 1
-      When ready: delete car-ph div,
-      replace with: <img src="your-poster.jpg" alt="Reelathon 2026 Poster">
-      -->
+      <!-- POSTER 2 -->
       <div class="carousel-item">
-        <div class="car-ph"><span class="ic">🖼️</span><p>Official Poster<br>Coming Soon</p></div>
-      </div>
-
-      <!-- EMBED POSTER 2 (delete slide if not needed) -->
-      <div class="carousel-item">
-        <div class="car-ph"><span class="ic">🖼️</span><p>Campaign Poster<br>Coming Soon</p></div>
+        <img src="poster_2.jpg" alt="RBI Reelathon 2026 Campaign Poster" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:var(--bg2);">
       </div>
 
     </div>
@@ -829,8 +877,8 @@ footer a{color:var(--gold);}
   <span class="eyebrow reveal">Timeline</span>
   <h2 class="section-h reveal"><em>Key</em> Dates</h2>
   <div class="timeline reveal">
-    <div class="tl-item"><p class="tl-date">Jun 11, 2026 · 10:00 AM IST</p><div><p class="tl-event">Registrations Open</p><p class="tl-note">Official link activated on this page</p></div></div><!-- EDIT date -->
-    <div class="tl-item"><p class="tl-date">Aug 07, 2026 · 6:00 PM IST</p><div><p class="tl-event">Submission Deadline</p><p class="tl-note">Late entries will not be accepted under any circumstance</p></div></div><!-- EDIT date -->
+    <div class="tl-item"><p class="tl-date">Jun 15, 2026</p><div><p class="tl-event">Inauguration &amp; Registrations Open</p><p class="tl-note">Competition officially launched · Register now</p></div></div><!-- EDIT date -->
+    <div class="tl-item"><p class="tl-date">Aug 10, 2026 · 11:59 PM IST</p><div><p class="tl-event">Submission Deadline</p><p class="tl-note">Late entries will not be accepted under any circumstance</p></div></div><!-- EDIT date -->
     <div class="tl-item"><p class="tl-date">To Be Announced</p><div><p class="tl-event">Closing Ceremony &amp; Results</p><p class="tl-note">Top entries screened live · Winners announced at the gala</p></div></div><!-- EDIT date -->
   </div>
 </div>
@@ -905,8 +953,8 @@ footer a{color:var(--gold);}
   <div class="contact-box reveal">
     <!-- EDIT: contact details -->
     <div class="contact-row"><span class="ci">✉</span><span>Email: <a href="mailto:rbireelathon@gmail.com" style="color:var(--gold);text-decoration:underline;">rbireelathon@gmail.com</a></span></div>
-    <div class="contact-row"><span class="ci">📞</span><span>0471-2783268 &nbsp;·&nbsp; Mon–Fri, 9:30 AM – 5:30 PM</span></div><!-- EDIT phone -->
-    <div class="contact-row"><span class="ci">📱</span><span>[Mobile number — coming soon] &nbsp;·&nbsp; Mon–Fri, 9:30 AM – 5:30 PM</span></div><!-- EDIT mobile -->
+    <div class="contact-row"><span class="ci">📞</span><span>0471-2783268 &nbsp;·&nbsp; Mon–Fri, 11:00 AM – 4:00 PM</span></div><!-- EDIT phone -->
+    <div class="contact-row"><span class="ci">📱</span><span>7907404152 &nbsp;·&nbsp; Mon–Fri, 11:00 AM – 4:00 PM</span></div><!-- EDIT mobile -->
     <div class="contact-row"><span class="ci">🏛</span><span>Reserve Bank of India, Thiruvananthapuram Regional Office</span></div>
   </div>
 </div>
@@ -981,7 +1029,7 @@ if (heroSubBtn) {
 /* ── 3. COUNTDOWN ─────────────────────────
    EDIT the deadline if it changes.
    Format: 'YYYY-MM-DDTHH:MM:SS+05:30' (IST) */
-const DEADLINE = new Date('2026-08-07T18:00:00+05:30'); // EDIT deadline — Aug 07 2026 6PM IST
+const DEADLINE = new Date('2026-08-10T23:59:00+05:30'); // EDIT deadline — Aug 10 2026 11:59PM IST
 
 function tick() {
   const diff = DEADLINE - new Date();
@@ -1031,13 +1079,13 @@ setInterval(refreshCounts, 30000);
 
 
 /* ── 5. CAROUSEL ──────────────────────────
-   Auto-advances every 4 seconds. */
+   Auto-advances every 4 seconds. Supports swipe on touch devices. */
 (function(){
   const track   = document.getElementById('carTrack');
   const items   = track ? track.querySelectorAll('.carousel-item') : [];
   const dotsEl  = document.getElementById('carDots');
   const caption = document.getElementById('carCaption');
-  const captions = ['Promo Video 1', 'Promo Video 2', 'Official Poster', 'Campaign Poster']; // EDIT labels
+  const captions = ['Promo Video', 'Official Poster', 'Campaign Poster']; // EDIT labels
   if (!items.length) return;
   let cur = 0, timer;
 
@@ -1063,6 +1111,26 @@ setInterval(refreshCounts, 30000);
   document.getElementById('carNext').addEventListener('click', () => go(cur + 1));
   if (caption) caption.textContent = captions[0];
   timer = setInterval(() => go(cur + 1), 4000);
+
+  // ---- Swipe support for touch devices ----
+  let touchStartX = 0, touchEndX = 0;
+  track.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+    clearInterval(timer); // pause auto-advance while interacting
+  }, { passive: true });
+
+  track.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    const threshold = 40; // minimum swipe distance in px
+    if (Math.abs(diff) > threshold) {
+      if (diff > 0) { go(cur + 1); } // swiped left -> next
+      else { go(cur - 1); } // swiped right -> prev
+    } else {
+      // No significant swipe — resume auto-advance
+      timer = setInterval(() => go(cur + 1), 4000);
+    }
+  }, { passive: true });
 })();
 
 
@@ -1241,7 +1309,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYsjO0NUYpyM0V9TI7mcxqxXugsCGPVKIIiThezQ-Cd6Zvbj5-x4EVdbMfXrs8GsP1/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9HJYPiwmXMSnHWPOKgSs2O9ncng8vl9AAFqp0Mmsp553G6-MEL_cUBYLSaRe2dnsU/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1698,7 +1766,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* SUBMISSION POPUP — JAVASCRIPT                                 */
 /* ============================================================ */
 (function() {
-  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbwYsjO0NUYpyM0V9TI7mcxqxXugsCGPVKIIiThezQ-Cd6Zvbj5-x4EVdbMfXrs8GsP1/exec";
+  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbz9HJYPiwmXMSnHWPOKgSs2O9ncng8vl9AAFqp0Mmsp553G6-MEL_cUBYLSaRe2dnsU/exec";
   var WORKER_URL  = "https://reelathon-upload.rbireelathon.workers.dev";
   var MAX_REEL_MB = 500;
   var MAX_ID_MB   = 5;
@@ -2078,7 +2146,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     } else if (attempts === 3) {
       return 'Your file may be in a format that is causing issues. Try converting it to MP4 using CapCut or HandBrake (both free apps) before uploading.';
     } else {
-      return 'If the issue persists, please reach out to us at rbireelathon@gmail.com or call 0471-2783268 and we will assist you.';
+      return 'If the issue persists, please reach out to us at rbireelathon@gmail.com or call 0471-2783268 / 7907404152 and we will assist you.';
     }
   }
 
@@ -2209,7 +2277,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
             <li>College ID cards of both participants</li>
             <li>Contact details of the college</li>
           </ul>
-          <strong>Last date for submission: August 07, 2026 | 06:00 PM IST.</strong> Submission through any other channel is not permitted.
+          <strong>Last date for submission: August 10, 2026 | 11:59 PM IST.</strong> Submission through any other channel is not permitted.
         </span>
       </li>
       <li>
@@ -2301,5 +2369,53 @@ window.addEventListener('load', function() {
   } catch(e) {}
 });
 </script>
+
+
+
+
+<!-- ============================================================ -->
+<!-- PROMO VIDEO POPUP                                              -->
+<!-- ============================================================ -->
+<div class="video-popup-overlay" id="videoPopupOverlay">
+  <div class="video-popup-card">
+    <button class="video-popup-close" id="videoPopupClose">&#x2715;</button>
+    <div class="video-popup-frame" id="videoPopupFrame"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================ */
+/* PROMO VIDEO POPUP — JS                                        */
+/* Video opens in a styled popup overlay matching site aesthetic */
+/* Placed after the popup HTML so getElementById always finds it */
+/* ============================================================ */
+(function() {
+  var wrap = document.getElementById('lazyVideoWrap');
+  if (!wrap) return;
+  var vimeoId = wrap.getAttribute('data-vimeo-id');
+
+  var overlay = document.getElementById('videoPopupOverlay');
+  var frameContainer = document.getElementById('videoPopupFrame');
+  var closeBtn = document.getElementById('videoPopupClose');
+
+  function openVideoPopup() {
+    frameContainer.innerHTML = '<iframe src="https://player.vimeo.com/video/' + vimeoId + '?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeVideoPopup() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    frameContainer.innerHTML = ''; // stop playback by removing iframe
+  }
+
+  wrap.addEventListener('click', openVideoPopup);
+  if (closeBtn) closeBtn.addEventListener('click', closeVideoPopup);
+  if (overlay) overlay.addEventListener('click', function(e) { if (e.target === overlay) closeVideoPopup(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && overlay.classList.contains('active')) closeVideoPopup(); });
+})();
+</script>
+
 </body>
 </html>

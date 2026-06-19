@@ -107,7 +107,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 [data-theme="light"] .pill span{color:var(--gold);}
 
 /* Scroll cue */
-.scroll-cue{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.35rem;opacity:0;animation:fadeUp .8s 2.2s forwards;z-index:1;}
+.scroll-cue{position:fixed;bottom:1.5rem;left:1.5rem;transform:none;display:flex;flex-direction:column;align-items:center;gap:.35rem;opacity:0;animation:fadeUp .8s 2.2s forwards;z-index:10;transition:opacity 0.4s ease;}
+.scroll-cue.hide{opacity:0!important;}
 .scroll-cue span{font-size:.5rem;letter-spacing:.25em;text-transform:uppercase;color:var(--fg3);}
 .scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s infinite;}
 
@@ -815,9 +816,10 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 
   <!-- Info pills -->
   <div class="hero-pills">
-    <div class="pill">Open to <span>UG &amp; PG Students — Kerala &amp; Lakshadweep</span></div>
+    <div class="pill">Open to <span>All UG &amp; PG Students — Kerala &amp; Lakshadweep</span></div>
     <div class="pill">Language <span>Malayalam</span></div>
     <div class="pill">Last Date for Submission <span>August 15, 2026</span></div>
+    <div class="pill">Entry <span>Free of Charge</span></div>
   </div>
 
   <div class="scroll-cue"><div class="scroll-line"></div><span>Scroll</span></div>
@@ -1087,6 +1089,16 @@ function tick() {
   document.getElementById('cd-s').textContent = pad((diff%60000)/1000);
 }
 tick(); setInterval(tick, 1000);
+
+// Hide scroll cue after user scrolls
+(function() {
+  var cue = document.querySelector('.scroll-cue');
+  if (!cue) return;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 80) { cue.classList.add('hide'); }
+    else { cue.classList.remove('hide'); }
+  }, { passive: true });
+})();
 
 
 /* ── 4. LIVE COUNTS ───────────────────────

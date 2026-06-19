@@ -1090,13 +1090,17 @@ function tick() {
 }
 tick(); setInterval(tick, 1000);
 
-// Hide scroll cue after user scrolls
+// Hide scroll cue permanently once user scrolls
 (function() {
   var cue = document.querySelector('.scroll-cue');
   if (!cue) return;
+  // If already scrolled before, hide immediately
+  if (sessionStorage.getItem('scrolled')) { cue.classList.add('hide'); return; }
   window.addEventListener('scroll', function() {
-    if (window.scrollY > 80) { cue.classList.add('hide'); }
-    else { cue.classList.remove('hide'); }
+    if (window.scrollY > 80) {
+      cue.classList.add('hide');
+      sessionStorage.setItem('scrolled', '1');
+    }
   }, { passive: true });
 })();
 

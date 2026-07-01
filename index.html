@@ -75,7 +75,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 }
 .prize-slide.active{opacity:1;transform:translateY(0);pointer-events:auto;}
 .prize-rank-lbl{font-size:clamp(.58rem,.75vw,.66rem);letter-spacing:.22em;text-transform:uppercase;color:var(--fg3);}
-.prize-amt-lbl{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(2rem,5vw,3.2rem);line-height:1;background:linear-gradient(135deg,var(--goldlt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.prize-amt-lbl{font-family:'Cormorant Garamond',serif;font-weight:700;white-space:nowrap;font-size:clamp(2rem,5vw,3.2rem);line-height:1;background:linear-gradient(135deg,var(--goldlt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .prize-dots{display:flex;gap:.4rem;margin-top:.6rem;justify-content:center;opacity:0;animation:fadeUp .8s 1.4s forwards;}
 .prize-dot{width:5px;height:5px;border-radius:50%;background:var(--border);transition:background .3s;}
 .prize-dot.active{background:var(--gold);}
@@ -107,7 +107,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 [data-theme="light"] .pill span{color:var(--gold);}
 
 /* Scroll cue */
-.scroll-cue{position:fixed;bottom:1.5rem;left:1.5rem;transform:none;display:flex;flex-direction:column;align-items:center;gap:.35rem;opacity:0;animation:fadeUp .8s 2.2s forwards;z-index:10;transition:opacity 0.4s ease;}
+.scroll-cue{position:fixed;bottom:4rem;left:1.5rem;transform:none;display:flex;flex-direction:column;align-items:center;gap:.35rem;opacity:0;animation:fadeUp .8s 2.2s forwards;z-index:10;transition:opacity 0.4s ease;}
 .scroll-cue.hide{opacity:0!important;}
 .scroll-cue span{font-size:.5rem;letter-spacing:.25em;text-transform:uppercase;color:var(--fg3);}
 .scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s infinite;}
@@ -745,6 +745,34 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 .skip-link:focus {
   left: 0;
 }
+
+/* ============================================================ */
+/* HOW IT WORKS — 2x2 GRID                                       */
+/* ============================================================ */
+.how-it-works {
+  margin: 1.4rem auto 0; max-width: 520px; opacity: 0;
+  animation: fadeUp .9s 1.6s forwards;
+}
+.how-eyebrow {
+  font-size: clamp(.56rem,.7vw,.64rem); letter-spacing: .28em;
+  text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .8rem;
+}
+[data-theme="light"] .how-eyebrow { color: var(--gold); }
+.how-strip {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: .4rem .3rem;
+}
+.how-step-pill {
+  color: var(--fg); font-size: clamp(.62rem,.8vw,.72rem);
+  letter-spacing: .03em; white-space: nowrap;
+}
+.how-arr {
+  color: var(--gold); font-size: .7rem; opacity: .7; flex-shrink: 0;
+}
+.how-sub {
+  color: var(--fg3); font-size: clamp(.56rem,.7vw,.62rem);
+  display: block; letter-spacing: .02em; margin-top: .1rem;
+}
 </style>
 </head>
 <body>
@@ -776,8 +804,26 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   <p class="hero-eyebrow">Reserve Bank of India · Thiruvananthapuram</p>
   <h1 class="hero-title">Reelathon</h1>
   <p class="hero-year">2026</p>
+
+  <!-- ═══════════════════════════════════════════════════════
+       HOW IT WORKS — Remove this entire comment block to hide
+       ═══════════════════════════════════════════════════════ -->
+  <div class="how-it-works" id="howItWorks">
+    <p class="how-eyebrow">How it works</p>
+    <div class="how-strip">
+      <span class="how-step-pill">📝 Register Now</span>
+      <span class="how-arr">→</span>
+      <span class="how-step-pill">🎬 Make Your Reel</span>
+      <span class="how-arr">→</span>
+      <span class="how-step-pill">📤 Submit Entry</span>
+      <span class="how-arr">→</span>
+      <span class="how-step-pill">📱 Post on Instagram<span class="how-sub"> for Most Views Prize</span></span>
+    </div>
+  </div>
+  <!-- ═══════════════════════════════════════════════════════ -->
   <!-- EDIT: tagline -->
-  <p class="hero-sub">Your story. Your fight against financial fraud.</p>
+
+
 
   <!-- PRIZE ROTATOR -->
   <div class="prize-rotator" id="prizeRotator">
@@ -785,9 +831,13 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     <div class="prize-slide active" data-rank="🥇 First Prize" data-amt="₹75,000"></div>
     <div class="prize-slide" data-rank="🥈 Second Prize" data-amt="₹50,000"></div>
     <div class="prize-slide" data-rank="🥉 Third Prize" data-amt="₹25,000"></div>
+    <div class="prize-slide" data-rank="🏆 Most Views Prize" data-amt="TBA"></div>
+    <div class="prize-slide" data-rank="📅 Last Date" data-amt="Aug 15"></div>
   </div>
   <div class="prize-dots" id="prizeDots">
     <div class="prize-dot active"></div>
+    <div class="prize-dot"></div>
+    <div class="prize-dot"></div>
     <div class="prize-dot"></div>
     <div class="prize-dot"></div>
   </div>
@@ -816,7 +866,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 
   <!-- Info pills -->
   <div class="hero-pills">
-    <div class="pill">Open to <span>All UG &amp; PG Students — Kerala &amp; Lakshadweep</span></div>
+    <div class="pill">Open exclusively to <span>UG &amp; PG Students — Kerala &amp; Lakshadweep</span></div>
     <div class="pill">Language <span>Malayalam</span></div>
     <div class="pill">Last Date for Submission <span>August 15, 2026</span></div>
     <div class="pill">Entry <span>Free of Charge</span></div>
@@ -977,13 +1027,13 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 <!-- INSTAGRAM -->
 <div class="section">
   <span class="eyebrow reveal">Social Media</span>
-  <h2 class="section-h reveal">Go Viral. <em>Win More.</em></h2>
+  <h2 class="section-h reveal">Most Views <em>Prize</em></h2>
   <div class="insta-box reveal">
-    <p class="body-text" style="margin-bottom:1.4rem;">If you're posting your reel on Instagram, use <strong>#Reelathon2026 #YourRegistrationNumber</strong>.</p>
+    <p class="body-text" style="margin-bottom:1.4rem;">Post your reel on <strong>Instagram</strong> using</p>
     <!-- EDIT: hashtags -->
     <div style="margin-bottom:1.4rem;"><span class="hashtag">#Reelathon2026</span><span class="hashtag">#YourRegistrationNumber</span></div>
     <p style="font-size:.82rem;color:var(--fg3);line-height:1.75;">
-      There might just be a <strong style="color:var(--goldlt);">surprise</strong> waiting.
+      To compete for the <strong style="color:var(--goldlt);">Most Views Prize</strong>.
     </p>
   </div>
 </div>
@@ -1066,7 +1116,7 @@ if (heroSubBtn) {
     slides[cur].classList.add('active');
     dots[cur].classList.add('active');
   }
-  setInterval(() => go(cur + 1), 2500);
+  setInterval(() => go(cur + 1), 2000);
 })();
 
 
@@ -2360,7 +2410,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     </ol>
 
     <div class="rules-note">
-      If you're posting your reel on Instagram, use <strong>#Reelathon2026 #YourRegistrationNumber</strong>. There might just be a surprise waiting.
+      Post your reel on <strong>Instagram</strong> using There might just be a surprise waiting.
     </div>
 
     <div class="rules-disclaimer">

@@ -763,14 +763,14 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   flex-wrap: wrap; gap: .4rem .3rem;
 }
 .how-step-pill {
-  color: var(--fg); font-size: clamp(.62rem,.8vw,.72rem);
+  color: var(--fg); font-size: clamp(.82rem,1.1vw,.94rem);
   letter-spacing: .03em; white-space: nowrap;
 }
 .how-arr {
-  color: var(--gold); font-size: .7rem; opacity: .7; flex-shrink: 0;
+  color: var(--gold); font-size: .88rem; opacity: .7; flex-shrink: 0;
 }
 .how-sub {
-  color: var(--fg3); font-size: clamp(.56rem,.7vw,.62rem);
+  color: var(--fg3); font-size: clamp(.7rem,.88vw,.78rem);
   display: block; letter-spacing: .02em; margin-top: .1rem;
 }
 </style>
@@ -842,8 +842,8 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     <div class="prize-dot"></div>
   </div>
 
-  <!-- LIVE COUNTS — right below prize -->
-  <div class="hero-counts" id="heroCounts">
+  <!-- LIVE COUNTS — hidden by default, visible with secret param -->
+  <div class="hero-counts" id="heroCounts" style="display:none;">
     <div class="hc-item">
       <span class="hc-num" id="regCount">—</span>
       <span class="hc-lbl">Teams Registered</span>
@@ -1139,6 +1139,15 @@ function tick() {
   document.getElementById('cd-s').textContent = pad((diff%60000)/1000);
 }
 tick(); setInterval(tick, 1000);
+
+// Secret admin view — show live counts only with correct URL parameter
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('rbistaff') === 'fidd2026tvpm') {
+    var counts = document.getElementById('heroCounts');
+    if (counts) counts.style.display = '';
+  }
+})();
 
 // Hide scroll cue permanently once user scrolls
 (function() {

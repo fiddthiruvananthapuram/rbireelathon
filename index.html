@@ -773,9 +773,23 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   color: var(--fg3); font-size: clamp(.7rem,.88vw,.78rem);
   display: block; letter-spacing: .02em; margin-top: .1rem;
 }
+
+/* ============================================================ */
+/* OFFICIAL NOTICE                                               */
+/* ============================================================ */
+.official-notice {
+  text-align: center; padding: .7rem clamp(1rem,4vw,2rem);
+  margin-top: 2rem;
+}
+.official-notice p {
+  color: var(--fg3); font-size: clamp(.58rem,.72vw,.66rem);
+  letter-spacing: .06em; line-height: 2.2; margin: 0; word-spacing: .08em;
+}
+.official-notice strong { color: var(--fg2); font-weight: 500; }
 </style>
 </head>
 <body>
+
 
 <!-- NAV -->
 <nav>
@@ -804,6 +818,11 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   <p class="hero-eyebrow">Reserve Bank of India · Thiruvananthapuram</p>
   <h1 class="hero-title">Reelathon</h1>
   <p class="hero-year">2026</p>
+
+  <!-- OFFICIAL NOTICE -->
+  <div class="official-notice">
+    <p>This is the <strong>official platform</strong> for RBI Reelathon 2026, developed and managed by the <strong>Reserve Bank of India, Thiruvananthapuram Regional Office</strong> for the conduct of this competition. This platform is independent of the official RBI website.</p>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════════
        HOW IT WORKS — Remove this entire comment block to hide

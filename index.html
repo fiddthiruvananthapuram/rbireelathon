@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -787,6 +786,44 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   letter-spacing: .06em; line-height: 2.2; margin: 0; word-spacing: .08em;
 }
 .official-notice strong { color: var(--fg2); font-weight: 500; }
+
+/* ============================================================ */
+/* MOST VIEWS ANNOUNCEMENT — first-visit popup (subtle, understated) */
+/* ============================================================ */
+.mv-announce-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); z-index: 10001;
+  justify-content: center; align-items: center;
+  padding: 20px; backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.mv-announce-overlay.active { display: flex; animation: fadeInOverlay 0.5s ease forwards; }
+.mv-announce-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 4px; width: 100%; max-width: 380px;
+  padding: 30px 28px; text-align: center; position: relative;
+  transform: translateY(30px);
+  animation: slideUpCard 0.55s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.mv-announce-card span.eyebrow-mini {
+  font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-bottom: 10px;
+}
+.mv-announce-card h3 {
+  font-family: 'Cormorant SC', serif; color: var(--fg);
+  font-size: 1.05rem; letter-spacing: 0.04em; margin: 0 0 12px; font-weight: 600;
+}
+.mv-announce-card p {
+  color: var(--fg3); font-size: 0.78rem; line-height: 1.65; margin: 0;
+}
+.mv-announce-btn {
+  margin-top: 20px; background: none;
+  border: 1px solid var(--gold); color: var(--gold);
+  padding: 9px 26px; border-radius: 3px;
+  font-family: 'Cormorant SC', serif; font-size: 0.76rem;
+  letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s;
+}
+.mv-announce-btn:hover { background: rgba(201,168,76,0.1); }
 </style>
 </head>
 <body>
@@ -851,7 +888,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     <div class="prize-slide active" data-rank="🥇 First Prize" data-amt="₹75,000"></div>
     <div class="prize-slide" data-rank="🥈 Second Prize" data-amt="₹50,000"></div>
     <div class="prize-slide" data-rank="🥉 Third Prize" data-amt="₹25,000"></div>
-    <div class="prize-slide" data-rank="🏆 Most Views Prize" data-amt="TBA"></div>
+    <div class="prize-slide" data-rank="🏆 Most Views Prize" data-amt="₹20,000"></div>
     <div class="prize-slide" data-rank="📅 Last Date" data-amt="Aug 15"></div>
   </div>
   <div class="prize-dots" id="prizeDots">
@@ -1052,9 +1089,15 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     <p class="body-text" style="margin-bottom:1.4rem;">Post your reel on <strong>Instagram</strong> using</p>
     <!-- EDIT: hashtags -->
     <div style="margin-bottom:1.4rem;"><span class="hashtag">#Reelathon2026</span><span class="hashtag">#YourRegistrationNumber</span></div>
-    <p style="font-size:.82rem;color:var(--fg3);line-height:1.75;">
-      To compete for the <strong style="color:var(--goldlt);">Most Views Prize</strong>.
+    <p style="font-size:.82rem;color:var(--fg3);line-height:1.75;margin-bottom:1rem;">
+      Add <strong style="color:var(--goldlt);">@reelathon2026</strong> as a collaborator on your post.
     </p>
+    <p style="font-size:.78rem;color:var(--fg3);line-height:1.7;">
+      Views counted as of <strong style="color:var(--fg2);">6:00 PM, September 15, 2026</strong>.
+    </p>
+    <div style="margin-top:1.2rem;">
+      <a href="#" onclick="event.preventDefault();openMostViewsRules();" style="color:var(--gold);font-size:0.75rem;letter-spacing:0.05em;text-decoration:underline;font-family:'Jost',sans-serif;">Complete rules for Most Views Prize</a>
+    </div>
   </div>
 </div>
 
@@ -1446,7 +1489,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsZC-Oi49QtE5rt9hrDPCGxFSQAfspeDsK0NT4oMIH7lVeG97-0t0qqEPe6ZUF/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsMzo7C5jXrTiz97fcOm3Bg_5OMnvzKpZHBoZTY60_VYBPFr8kfUSf2etb2gPRAIOd/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1879,6 +1922,10 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
       <h3>Entry Submitted!</h3>
       <p>Your reel has been successfully received.</p>
       <p style="color:var(--fg3); font-size:0.77rem; margin-top:10px;">A confirmation email has been sent to your registered email address.<br>Please check your inbox (and spam folder).</p>
+      <div style="margin-top:18px; padding:14px 16px; background:rgba(201,168,76,0.06); border:1px solid var(--gold); border-radius:3px; text-align:left;">
+        <p style="color:var(--goldlt); font-size:0.8rem; font-family:'Cormorant SC',serif; letter-spacing:0.04em; margin-bottom:6px;">Want to compete for the Most Views Prize (₹20,000)?</p>
+        <p style="color:var(--fg2); font-size:0.76rem; line-height:1.6;">Post on Instagram with <strong>#Reelathon2026 #YourRegistrationNumber</strong> and add <strong>@reelathon2026</strong> as collaborator.</p>
+      </div>
       <p style="color:var(--fg3); font-size:0.75rem; margin-top:14px;">Best of luck to your team!</p>
     </div>
 
@@ -1903,7 +1950,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* SUBMISSION POPUP — JAVASCRIPT                                 */
 /* ============================================================ */
 (function() {
-  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbzsZC-Oi49QtE5rt9hrDPCGxFSQAfspeDsK0NT4oMIH7lVeG97-0t0qqEPe6ZUF/exec";
+  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbxsMzo7C5jXrTiz97fcOm3Bg_5OMnvzKpZHBoZTY60_VYBPFr8kfUSf2etb2gPRAIOd/exec";
   var WORKER_URL  = "https://reelathon-upload.rbireelathon.workers.dev";
   var MAX_REEL_MB = 500;
   var MAX_ID_MB   = 5;
@@ -2488,6 +2535,118 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 })();
 </script>
 
+<!-- ============================================================ -->
+<!-- MOST VIEWS ANNOUNCEMENT — shown once on first visit           -->
+<!-- ============================================================ -->
+<div class="mv-announce-overlay" id="mvAnnounceOverlay">
+  <div class="mv-announce-card">
+    <span class="eyebrow-mini">Announcement</span>
+    <h3>The Most Views Prize is now live — ₹20,000</h3>
+    <p>Once you submit your reel, you can also post it on Instagram to compete for this prize. Check the rules on how to post.</p>
+    <button class="mv-announce-btn" id="mvAnnounceClose">Got it</button>
+  </div>
+</div>
+
+<script>
+/* Show Most Views Prize announcement once per visitor */
+(function() {
+  var overlay = document.getElementById('mvAnnounceOverlay');
+  var closeBtn = document.getElementById('mvAnnounceClose');
+  if (!overlay || !closeBtn) return;
+
+  if (!localStorage.getItem('mvPrizeAnnounced')) {
+    setTimeout(function() {
+      overlay.classList.add('active');
+    }, 600);
+  }
+
+  function dismissAnnounce() {
+    overlay.classList.remove('active');
+    localStorage.setItem('mvPrizeAnnounced', '1');
+  }
+
+  closeBtn.addEventListener('click', dismissAnnounce);
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) dismissAnnounce(); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) dismissAnnounce();
+  });
+})();
+</script>
+
+<!-- ============================================================ -->
+<!-- MOST VIEWS PRIZE — RULES POPUP                                -->
+<!-- ============================================================ -->
+<div class="rules-overlay" id="mvRulesOverlay">
+  <div class="rules-card" id="mvRulesCard">
+    <button class="rules-close" id="mvRulesClose" aria-label="Close">&#x2715;</button>
+    <div class="rules-card-header">
+      <h2>Most Views Prize</h2>
+      <p>RBI Reelathon 2026 &nbsp;·&nbsp; Thiruvananthapuram</p>
+    </div>
+
+    <p style="color:var(--fg2);font-size:0.82rem;line-height:1.7;margin-bottom:1.2rem;">Want a shot at the Most Views Prize? Here's all you need to do:</p>
+
+    <ol class="full-rules-list">
+      <li>
+        <span class="full-rule-num">01</span>
+        <span class="full-rule-txt">Post your reel on Instagram using <strong>#Reelathon2026</strong> and <strong>#YourRegistrationNumber</strong> in the caption.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">02</span>
+        <span class="full-rule-txt">Keep both your Instagram account and the reel public. Reels posted from private accounts cannot be considered.</span>
+      </li>
+      <li>
+        <span class="full-rule-num">03</span>
+        <span class="full-rule-txt">Add <strong>@reelathon2026</strong> as a collaborator on your post (Tag People → Invite Collaborator).</span>
+      </li>
+    </ol>
+
+    <p style="color:var(--fg2);font-size:0.8rem;line-height:1.7;margin:1.2rem 0;">Once we accept your collaboration invite, the reel will appear on both your profile and @reelathon2026, and the view count will be shared between both posts. You don't need to submit screenshots or provide any additional proof.</p>
+
+    <div class="rules-note">
+      <strong>View Count Cut-off</strong><br>
+      The winner will be determined based on the view count as of <strong>6:00 PM on September 15, 2026</strong>. Please ensure your collaboration invite is sent — and ideally accepted — well before the deadline.
+    </div>
+
+    <p style="color:var(--fg3);font-size:0.74rem;line-height:1.7;margin-top:1.2rem;">
+      <strong style="color:var(--fg2);">A Few Things to Note</strong><br>
+      · If you don't follow @reelathon2026, your collaboration invite will appear in our Requests folder instead of the main inbox. Don't worry if it takes us a day or two to accept — it hasn't been lost.<br>
+      · Only one collaboration invite should be sent for each participant's reel.
+    </p>
+
+    <div style="text-align:center; margin-top:20px; padding-bottom:4px;">
+      <a href="#" id="mvRulesBackBtn" onclick="event.preventDefault();" style="color:var(--fg3);font-size:0.74rem;letter-spacing:0.08em;text-decoration:none;font-family:'Jost',sans-serif;transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--fg3)'">Close</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================ */
+/* MOST VIEWS PRIZE POPUP — JAVASCRIPT                            */
+/* ============================================================ */
+(function() {
+  var overlay  = document.getElementById('mvRulesOverlay');
+  var closeBtn = document.getElementById('mvRulesClose');
+  var backBtn  = document.getElementById('mvRulesBackBtn');
+
+  window.openMostViewsRules = function() {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  function closeMvRules() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeMvRules);
+  if (backBtn)  backBtn.addEventListener('click', closeMvRules);
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) closeMvRules(); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) closeMvRules();
+  });
+})();
+</script>
 
 <script>
 /* Deep link handler — opens submission popup with pre-filled fields from email link */

@@ -637,6 +637,12 @@ footer a{color:var(--gold);}
   background: rgba(201,168,76,0.06); border: 1px solid var(--gold);
   border-radius: 3px; color: var(--fg2); font-size: 0.78rem; line-height: 1.6;
 }
+.rules-warning {
+  margin-top: 14px; padding: 12px 16px;
+  background: rgba(201,168,76,0.06); border: 1px solid var(--gold);
+  border-radius: 3px; color: var(--fg2); font-size: 0.8rem; line-height: 1.6;
+  text-align: center;
+}
 .rules-back-btn {
   margin-top: 24px; width: 100%; background: none;
   border: 1px solid var(--gold); color: var(--gold);
@@ -1094,6 +1100,9 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     </p>
     <p style="font-size:.78rem;color:var(--fg3);line-height:1.7;">
       Views counted as of <strong style="color:var(--fg2);">6:00 PM, September 15, 2026</strong>.
+    </p>
+    <p style="font-size:.78rem;color:var(--goldlt);line-height:1.7;margin-top:1rem;font-weight:600;">
+      ⚠ Artificially inflated views will lead to disqualification, without prior warning.
     </p>
     <div style="margin-top:1.2rem;">
       <a href="#" onclick="event.preventDefault();openMostViewsRules();" style="color:var(--gold);font-size:0.75rem;letter-spacing:0.05em;text-decoration:underline;font-family:'Jost',sans-serif;">Complete rules for Most Views Prize</a>
@@ -2606,6 +2615,10 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
     <div class="rules-note">
       <strong>View Count Cut-off</strong><br>
       The winner will be determined based on the view count as of <strong>6:00 PM on September 15, 2026</strong>. Please ensure your collaboration invite is sent — and ideally accepted — well before the deadline.
+    </div>
+
+    <div class="rules-warning">
+      <strong>⚠ Artificially inflated views will lead to disqualification, without prior warning.</strong>
     </div>
 
     <p style="color:var(--fg3);font-size:0.74rem;line-height:1.7;margin-top:1.2rem;">

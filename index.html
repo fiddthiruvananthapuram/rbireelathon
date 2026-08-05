@@ -830,6 +830,15 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s;
 }
 .mv-announce-btn:hover { background: rgba(201,168,76,0.1); }
+.mv-announce-x {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; color: var(--fg3);
+  font-size: 15px; cursor: pointer; padding: 4px; transition: color 0.2s;
+}
+.mv-announce-x:hover { color: var(--gold); }
+.mv-announce-divider {
+  height: 1px; background: var(--border2); margin: 16px 0;
+}
 </style>
 </head>
 <body>
@@ -895,7 +904,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     <div class="prize-slide" data-rank="🥈 Second Prize" data-amt="₹50,000"></div>
     <div class="prize-slide" data-rank="🥉 Third Prize" data-amt="₹25,000"></div>
     <div class="prize-slide" data-rank="🏆 Most Views Prize" data-amt="₹20,000"></div>
-    <div class="prize-slide" data-rank="📅 Last Date" data-amt="Aug 15"></div>
+    <div class="prize-slide" data-rank="📅 Last Date · Extended" data-amt="Aug 31"></div>
   </div>
   <div class="prize-dots" id="prizeDots">
     <div class="prize-dot active"></div>
@@ -931,7 +940,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   <div class="hero-pills">
     <div class="pill">Open exclusively to <span>UG &amp; PG Students — Kerala &amp; Lakshadweep</span></div>
     <div class="pill">Language <span>Malayalam</span></div>
-    <div class="pill">Last Date for Submission <span>August 15, 2026</span></div>
+    <div class="pill">Last Date for Submission <span style="color:var(--goldlt);">August 31, 2026 <em style="font-style:normal;font-size:0.85em;opacity:0.85;">(Extended)</em></span></div>
     <div class="pill">Entry <span>Free of Charge</span></div>
   </div>
 
@@ -1035,7 +1044,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   <h2 class="section-h reveal"><em>Key</em> Dates</h2>
   <div class="timeline reveal">
     <div class="tl-item"><p class="tl-date">Jun 15, 2026</p><div><p class="tl-event">Inauguration &amp; Registrations Open</p><p class="tl-note">Competition officially launched · Register now</p></div></div><!-- EDIT date -->
-    <div class="tl-item"><p class="tl-date">Aug 15, 2026 · 11:59 PM IST</p><div><p class="tl-event">Submission Deadline</p><p class="tl-note">Late entries will not be accepted under any circumstance</p></div></div><!-- EDIT date -->
+    <div class="tl-item"><p class="tl-date">Aug 31, 2026 · 11:59 PM IST</p><div><p class="tl-event">Submission Deadline</p><p class="tl-note">Late entries will not be accepted under any circumstance</p></div></div><!-- EDIT date -->
     <div class="tl-item"><p class="tl-date">To Be Announced</p><div><p class="tl-event">Closing Ceremony &amp; Results</p><p class="tl-note">Top entries screened live · Winners announced at the gala</p></div></div><!-- EDIT date -->
   </div>
 </div>
@@ -1195,7 +1204,7 @@ if (heroSubBtn) {
 /* ── 3. COUNTDOWN ─────────────────────────
    EDIT the deadline if it changes.
    Format: 'YYYY-MM-DDTHH:MM:SS+05:30' (IST) */
-const DEADLINE = new Date('2026-08-15T23:59:00+05:30'); // EDIT deadline — Aug 10 2026 11:59PM IST
+const DEADLINE = new Date('2026-08-31T23:59:00+05:30'); // EDIT deadline — Aug 10 2026 11:59PM IST
 
 function tick() {
   const diff = DEADLINE - new Date();
@@ -1498,7 +1507,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* ============================================================ */
 (function () {
   // ---- UPDATE THIS with your deployed Apps Script Web App URL ----
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsMzo7C5jXrTiz97fcOm3Bg_5OMnvzKpZHBoZTY60_VYBPFr8kfUSf2etb2gPRAIOd/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYff_BW8X4uDQZG1LjAVYovY0y1bVktnIER-Kn43ubznhYtcmhgW8WOq6w8gCVZ3AJ/exec";
   // ----------------------------------------------------------------
 
   var COURSE_SUGGESTIONS = [
@@ -1959,7 +1968,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 /* SUBMISSION POPUP — JAVASCRIPT                                 */
 /* ============================================================ */
 (function() {
-  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbxsMzo7C5jXrTiz97fcOm3Bg_5OMnvzKpZHBoZTY60_VYBPFr8kfUSf2etb2gPRAIOd/exec";
+  var SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbxYff_BW8X4uDQZG1LjAVYovY0y1bVktnIER-Kn43ubznhYtcmhgW8WOq6w8gCVZ3AJ/exec";
   var WORKER_URL  = "https://reelathon-upload.rbireelathon.workers.dev";
   var MAX_REEL_MB = 500;
   var MAX_ID_MB   = 5;
@@ -2470,7 +2479,7 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
             <li>College ID cards of both participants</li>
             <li>Contact details of the college</li>
           </ul>
-          <strong>Last date for submission: August 15, 2026 | 11:59 PM IST.</strong> Submission through any other channel is not permitted.
+          <strong>Last date for submission: August 31, 2026 | 11:59 PM IST.</strong> Submission through any other channel is not permitted.
         </span>
       </li>
       <li>
@@ -2549,21 +2558,28 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 <!-- ============================================================ -->
 <div class="mv-announce-overlay" id="mvAnnounceOverlay">
   <div class="mv-announce-card">
-    <span class="eyebrow-mini">Announcement</span>
-    <h3>The Most Views Prize is now live — ₹20,000</h3>
-    <p>Once you submit your reel, you can also post it on Instagram to compete for this prize. Check the rules on how to post.</p>
+    <button class="mv-announce-x" id="mvAnnounceX" aria-label="Close">&#x2715;</button>
+    <span class="eyebrow-mini">Update</span>
+    <h3>Deadline Extended to August 31</h3>
+    <p>In view of the heavy rains and flooding across Kerala, the last date for submission has been extended to <strong style="color:var(--fg2);">August 31, 2026, 11:59 PM IST</strong>.</p>
+    <div class="mv-announce-divider"></div>
+    <p>The Most Views Prize (₹20,000) is also now live. Check the rules and prize section for details.</p>
     <button class="mv-announce-btn" id="mvAnnounceClose">Got it</button>
   </div>
 </div>
 
 <script>
-/* Show Most Views Prize announcement once per visitor */
+/* Show combined announcement once per visitor — versioned key so new announcements
+   reach everyone again, even those who saw an earlier version */
 (function() {
   var overlay = document.getElementById('mvAnnounceOverlay');
   var closeBtn = document.getElementById('mvAnnounceClose');
+  var xBtn = document.getElementById('mvAnnounceX');
   if (!overlay || !closeBtn) return;
 
-  if (!localStorage.getItem('mvPrizeAnnounced')) {
+  var ANNOUNCEMENT_KEY = 'siteAnnouncement_v2'; // bump version number for future announcements
+
+  if (!localStorage.getItem(ANNOUNCEMENT_KEY)) {
     setTimeout(function() {
       overlay.classList.add('active');
     }, 600);
@@ -2571,15 +2587,18 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 
   function dismissAnnounce() {
     overlay.classList.remove('active');
-    localStorage.setItem('mvPrizeAnnounced', '1');
+    localStorage.setItem(ANNOUNCEMENT_KEY, '1');
   }
 
   closeBtn.addEventListener('click', dismissAnnounce);
-  overlay.addEventListener('click', function(e) { if (e.target === overlay) dismissAnnounce(); });
+  if (xBtn) xBtn.addEventListener('click', dismissAnnounce);
+  // NOTE: clicking outside the card intentionally does NOT close this popup —
+  // this is a time-sensitive announcement (deadline extension) that must be read.
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && overlay.classList.contains('active')) dismissAnnounce();
   });
 })();
+
 </script>
 
 <!-- ============================================================ -->

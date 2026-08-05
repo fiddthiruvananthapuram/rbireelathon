@@ -916,8 +916,19 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     <div class="prize-slide" data-rank="🥈 Second Prize" data-amt="₹50,000"></div>
     <div class="prize-slide" data-rank="🥉 Third Prize" data-amt="₹25,000"></div>
     <div class="prize-slide" data-rank="🏆 Most Views Prize" data-amt="₹20,000"></div>
-    <div class="prize-slide" data-rank="📅 Last Date · Extended" data-amt="Aug 31"></div>
+    <div class="prize-slide" id="lastDateSlide" data-rank="📅 Last Date · Extended" data-amt="Aug 31"></div>
   </div>
+  <script>
+    // Runs synchronously, immediately after this element exists in the DOM —
+    // before the rotator's own script builds the visible slide text.
+    if (window.__PRE_EXTENSION__) {
+      var lds = document.getElementById('lastDateSlide');
+      if (lds) {
+        lds.setAttribute('data-rank', '📅 Last Date');
+        lds.setAttribute('data-amt', 'Aug 15');
+      }
+    }
+  </script>
   <div class="prize-dots" id="prizeDots">
     <div class="prize-dot active"></div>
     <div class="prize-dot"></div>
@@ -2579,12 +2590,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (pillSpan) {
     pillSpan.innerHTML = 'August 15, 2026';
     pillSpan.removeAttribute('style');
-  }
-
-  var lastDateSlide = document.querySelector('.prize-slide[data-rank*="Last Date"]');
-  if (lastDateSlide) {
-    lastDateSlide.setAttribute('data-rank', '📅 Last Date');
-    lastDateSlide.setAttribute('data-amt', 'Aug 15');
   }
 
   var timelineDates = document.querySelectorAll('.tl-date');

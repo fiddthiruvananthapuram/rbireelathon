@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+<script>
+/* Deadline extension gate — runs first, before any other script.
+   Sets window.__REVERTED_DEADLINE__ synchronously so the countdown
+   timer script (which runs later in body) picks it up correctly. */
+(function() {
+  var GATE_DATE = new Date('2026-08-08T00:00:00+05:30');
+  if (new Date() < GATE_DATE) {
+    window.__PRE_EXTENSION__ = true;
+    window.__REVERTED_DEADLINE__ = new Date('2026-08-15T23:59:00+05:30');
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reelathon 2026 — RBI Thiruvananthapuram</title>
@@ -1204,7 +1216,7 @@ if (heroSubBtn) {
 /* ── 3. COUNTDOWN ─────────────────────────
    EDIT the deadline if it changes.
    Format: 'YYYY-MM-DDTHH:MM:SS+05:30' (IST) */
-const DEADLINE = new Date('2026-08-31T23:59:00+05:30'); // EDIT deadline — Aug 10 2026 11:59PM IST
+const DEADLINE = window.__REVERTED_DEADLINE__ || new Date('2026-08-31T23:59:00+05:30'); // EDIT deadline — reverts to Aug 15 automatically before Aug 8 gate
 
 function tick() {
   const diff = DEADLINE - new Date();
@@ -2556,6 +2568,34 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 <!-- ============================================================ -->
 <!-- MOST VIEWS ANNOUNCEMENT — shown once on first visit           -->
 <!-- ============================================================ -->
+
+<script>
+/* Apply the pre-extension date reverts to visible page text.
+   Runs after DOM is ready; only activates if the head-script set the flag. */
+document.addEventListener('DOMContentLoaded', function() {
+  if (!window.__PRE_EXTENSION__) return;
+
+  var pillSpan = document.querySelector('.pill span[style*="goldlt"]');
+  if (pillSpan) {
+    pillSpan.innerHTML = 'August 15, 2026';
+    pillSpan.removeAttribute('style');
+  }
+
+  var lastDateSlide = document.querySelector('.prize-slide[data-rank*="Last Date"]');
+  if (lastDateSlide) {
+    lastDateSlide.setAttribute('data-rank', '📅 Last Date');
+    lastDateSlide.setAttribute('data-amt', 'Aug 15');
+  }
+
+  var timelineDates = document.querySelectorAll('.tl-date');
+  timelineDates.forEach(function(el) {
+    if (el.textContent.indexOf('Aug 31') > -1) {
+      el.textContent = 'Aug 15, 2026 · 11:59 PM IST';
+    }
+  });
+});
+</script>
+
 <div class="mv-announce-overlay" id="mvAnnounceOverlay">
   <div class="mv-announce-card">
     <button class="mv-announce-x" id="mvAnnounceX" aria-label="Close">&#x2715;</button>
@@ -2579,7 +2619,8 @@ document.querySelectorAll('a[href="#rules"], a[href="#contact"]').forEach(a => {
 
   var ANNOUNCEMENT_KEY = 'siteAnnouncement_v2'; // bump version number for future announcements
 
-  if (!localStorage.getItem(ANNOUNCEMENT_KEY)) {
+  // Popup stays completely dormant until Aug 8, 2026 — matches the date gate in <head>
+  if (!window.__PRE_EXTENSION__ && !localStorage.getItem(ANNOUNCEMENT_KEY)) {
     setTimeout(function() {
       overlay.classList.add('active');
     }, 600);

@@ -6,7 +6,7 @@
    Sets window.__REVERTED_DEADLINE__ synchronously so the countdown
    timer script (which runs later in body) picks it up correctly. */
 (function() {
-  var GATE_DATE = new Date('2026-08-08T00:00:00+05:30');
+  var GATE_DATE = new Date('2026-08-10T00:00:00+05:30');
   if (new Date() < GATE_DATE) {
     window.__PRE_EXTENSION__ = true;
     window.__REVERTED_DEADLINE__ = new Date('2026-08-15T23:59:00+05:30');
